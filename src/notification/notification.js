@@ -1,5 +1,3 @@
 'use strict';
 
-mica.notification = angular.module('mica.notification', [
-  'pascalprecht.translate',
-  'ui.bootstrap']);
+angular.module('obiba.notification', ['pascalprecht.translate', 'ui.bootstrap']);

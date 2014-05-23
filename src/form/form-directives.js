@@ -1,6 +1,6 @@
 'use strict';
 
-mica.form
+angular.module('obiba.form')
 
   // http://codetunes.com/2013/server-form-validation-with-angular
   .directive('serverError', [function () {

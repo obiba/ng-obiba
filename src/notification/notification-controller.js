@@ -1,60 +1,61 @@
 'use strict';
 
-mica.notification
-  .controller('NotificationController', ['$rootScope', '$scope', '$modal',
-    function ($rootScope, $scope, $modal) {
+angular.module('obiba.notification')
 
-      $scope.$on('showNotificationDialogEvent', function (event, notification) {
-        $modal.open({
-          templateUrl: 'app/notification/notification-modal.html',
-          controller: 'NotificationModalController',
-          resolve: {
-            notification: function () {
-              return notification;
-            }
-          }
-        });
-      });
+    .controller('NotificationController', ['$rootScope', '$scope', '$modal',
+      function ($rootScope, $scope, $modal) {
 
-      $scope.$on('showConfirmDialogEvent', function (event, confirm, args) {
-        $modal.open({
-          templateUrl: 'app/notification/notification-confirm-modal.html',
-          controller: 'NotificationConfirmationController',
-          resolve: {
-            confirm: function () {
-              return confirm;
+        $scope.$on('showNotificationDialogEvent', function (event, notification) {
+          $modal.open({
+            templateUrl: 'app/notification/notification-modal.html',
+            controller: 'NotificationModalController',
+            resolve: {
+              notification: function () {
+                return notification;
+              }
             }
-          }
-        }).result.then(function () {
-            $rootScope.$broadcast('confirmDialogAcceptedEvent', args);
-          }, function () {
-            $rootScope.$broadcast('confirmDialogRejectedEvent', args);
           });
-      });
+        });
 
-    }])
-  .controller('NotificationModalController', ['$scope', '$modalInstance', 'notification',
-    function ($scope, $modalInstance, notification) {
+        $scope.$on('showConfirmDialogEvent', function (event, confirm, args) {
+          $modal.open({
+            templateUrl: 'app/notification/notification-confirm-modal.html',
+            controller: 'NotificationConfirmationController',
+            resolve: {
+              confirm: function () {
+                return confirm;
+              }
+            }
+          }).result.then(function () {
+                $rootScope.$broadcast('confirmDialogAcceptedEvent', args);
+              }, function () {
+                $rootScope.$broadcast('confirmDialogRejectedEvent', args);
+              });
+        });
 
-      $scope.notification = notification;
+      }])
+    .controller('NotificationModalController', ['$scope', '$modalInstance', 'notification',
+      function ($scope, $modalInstance, notification) {
 
-      $scope.close = function () {
-        $modalInstance.dismiss('close');
-      };
+        $scope.notification = notification;
 
-    }])
-  .controller('NotificationConfirmationController', ['$scope', '$modalInstance', 'confirm',
-    function ($scope, $modalInstance, confirm) {
+        $scope.close = function () {
+          $modalInstance.dismiss('close');
+        };
 
-      $scope.confirm = confirm;
+      }])
+    .controller('NotificationConfirmationController', ['$scope', '$modalInstance', 'confirm',
+      function ($scope, $modalInstance, confirm) {
 
-      $scope.ok = function () {
-        $modalInstance.close();
-      };
+        $scope.confirm = confirm;
 
-      $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
-      };
+        $scope.ok = function () {
+          $modalInstance.close();
+        };
 
-    }]);
+        $scope.cancel = function () {
+          $modalInstance.dismiss('cancel');
+        };
+
+      }]);
 

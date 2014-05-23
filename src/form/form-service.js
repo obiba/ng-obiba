@@ -1,6 +1,6 @@
 'use strict';
 
-mica.form
+angular.module('obiba.form')
 
   .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils',
     function ($rootScope, $log, StringUtils) {

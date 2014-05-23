@@ -1,6 +1,6 @@
 'use strict';
 
-mica.rest = angular.module('mica.rest', ['mica.notification'])
+angular.module('obiba.rest', ['obiba.notification'])
 
   .config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push('loadingHttpInterceptor');

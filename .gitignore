@@ -7,5 +7,4 @@ node_modules
 .settings
 .tmp
 .DS_Store
-dist
 *.log

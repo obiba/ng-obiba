@@ -1,6 +1,20 @@
 # OBiBa AngularJS commons
 
+## How to build
 
+Install NodeJS, Grunt and Bower:
+
+```
+sudo add-apt-repository -y ppa:chris-lea/node.js
+sudo apt-get install -y nodejs
+npm install -g grunt-cli bower
+```
+
+Download dependencies:
+
+```
+npm install
+```
 
 ## Bug tracker
 
@@ -23,4 +37,5 @@ obiba-users@googlegroups.com
 
 ## License
 
-OBiBa software are open source and made available under the [GPL3 licence](http://www.obiba.org/node/62). OBiBa software are free of charge.
+OBiBa software are open source and made available under the [GPL3 licence](http://www.obiba.org/node/62).
+OBiBa software are free of charge.

@@ -1,0 +1,17 @@
+{
+  "name": "ng-obiba",
+  "main": "ng-obiba.js",
+  "version": "0.1.0",
+  "authors": [
+    "Cedric Thiebault <cthiebault@p3g.org>"
+  ],
+  "description": "OBiBa commons components for AngularJS",
+  "license": "GNU",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

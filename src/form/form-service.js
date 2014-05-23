@@ -14,7 +14,7 @@ angular.module('obiba.form')
           var setFieldError = function (field, error) {
             form[field].$dirty = true;
             form[field].$setValidity('server', false);
-            if (form[field].errors == null) form[field].errors = [];
+            if (form[field].errors === null) form[field].errors = [];
             form[field].errors.push(StringUtils.capitaliseFirstLetter(error.message));
           };
 
@@ -37,5 +37,5 @@ angular.module('obiba.form')
           });
         }
 
-      }
+      };
     }]);

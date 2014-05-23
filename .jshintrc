@@ -1,0 +1,8 @@
+{
+  "indent": 2,
+  "globalstrict": true,
+  "laxcomma": true,
+  "globals": {
+    "angular": true
+  }
+}

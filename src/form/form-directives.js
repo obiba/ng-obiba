@@ -30,7 +30,7 @@ angular.module('obiba.form')
       },
       templateUrl: 'app/commons/form/form-input-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
-        if (angular.isUndefined($scope.model) || $scope.model == null) {
+        if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = "";
         }
         $scope.form = ctrl;
@@ -50,7 +50,7 @@ angular.module('obiba.form')
       },
       templateUrl: 'app/commons/form/form-checkbox-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
-        if (angular.isUndefined($scope.model) || $scope.model == null) {
+        if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = false;
         }
         $scope.form = ctrl;

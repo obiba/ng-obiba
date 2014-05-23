@@ -9,10 +9,7 @@ module.exports = function (grunt) {
     /* convert AngularJs html templates to cached JavaScript */
     html2js: {
       main: {
-        options: {
-          base: 'src',
-          module: 'color-pusher-widget.templates'
-        },
+        options: {},
         src: ['src/**/*.tpl.html'],
         dest: 'tmp/<%= pkg.name %>.templates.js'
       }
@@ -40,29 +37,9 @@ module.exports = function (grunt) {
     },
 
     jshint: {
+      files: ['src/**/*.js'],
       options: {
-        indent: 2,
-        globalstrict: true,
-        laxcomma: true
-      },
-      chart: {
-        options: {
-          browser: true,
-          globals: {
-            d3: true
-          }
-        },
-        files: {
-          src: ['src/**/*.js']
-        }
-      },
-      grunt: {
-        options: {
-          node: true
-        },
-        files: {
-          src: ["Gruntfile.js"]
-        }
+        jshintrc: '.jshintrc'
       }
     }
   });
@@ -73,6 +50,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-html2js');
 
-  grunt.registerTask('default', ['clean', 'html2js', 'concat', 'uglify']);
+  grunt.registerTask('default', ['clean', 'jshint', 'html2js', 'concat', 'uglify']);
 
 };

@@ -226,7 +226,7 @@ angular.module('obiba.utils', [])
         return string.charAt(0).toUpperCase() + string.slice(1);
       }
     });
-;angular.module('color-pusher-widget.templates', ['form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
+;angular.module('templates-main', ['form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
 
 angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-checkbox-template.tpl.html",

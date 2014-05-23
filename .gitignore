@@ -6,5 +6,6 @@ node_modules
 .project
 .settings
 .tmp
+tmp
 .DS_Store
 *.log

@@ -7,7 +7,7 @@ angular.module('obiba.notification')
 
         $scope.$on('showNotificationDialogEvent', function (event, notification) {
           $modal.open({
-            templateUrl: 'app/notification/notification-modal.html',
+            templateUrl: 'app/notification/notification-modal.tpl.html',
             controller: 'NotificationModalController',
             resolve: {
               notification: function () {
@@ -19,7 +19,7 @@ angular.module('obiba.notification')
 
         $scope.$on('showConfirmDialogEvent', function (event, confirm, args) {
           $modal.open({
-            templateUrl: 'app/notification/notification-confirm-modal.html',
+            templateUrl: 'app/notification/notification-confirm-modal.tpl.html',
             controller: 'NotificationConfirmationController',
             resolve: {
               confirm: function () {

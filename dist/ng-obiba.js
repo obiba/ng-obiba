@@ -7,107 +7,14 @@
  */
 'use strict';
 
-angular.module('obiba.form', ['obiba.utils', 'obiba.notification']);
-;'use strict';
+angular.module('obiba.utils', [])
 
-angular.module('obiba.form')
-
-  .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils', 'NOTIFICATION_EVENTS',
-    function ($rootScope, $log, StringUtils, NOTIFICATION_EVENTS) {
-      this.error = function (response, form, languages) {
-//        $log.debug('FormServerValidation response', response);
-//        $log.debug('FormServerValidation form', form);
-//        $log.debug('FormServerValidation languages', languages);
-
-        if (response.data instanceof Array) {
-
-          var setFieldError = function (field, error) {
-            form[field].$dirty = true;
-            form[field].$setValidity('server', false);
-            if (form[field].errors === null) {
-              form[field].errors = [];
-            }
-            form[field].errors.push(StringUtils.capitaliseFirstLetter(error.message));
-          };
-
-          response.data.forEach(function (error) {
-            var fieldPrefix = error.path.split('.').slice(-2).join('.');
-            if (languages && languages.length) {
-              languages.forEach(function (lang) {
-                setFieldError(fieldPrefix + '-' + lang, error);
-              });
-            } else {
-              setFieldError(fieldPrefix, error);
-            }
-          });
-          $log.debug(form);
-        } else {
-          $rootScope.$broadcast(NOTIFICATION_EVENTS.showNotificationDialog, {
-            titleKey: 'form-server-error',
-            message: response.data ? response.data : angular.fromJson(response)
-          });
-        }
-
+    .service('StringUtils', function () {
+      this.capitaliseFirstLetter = function (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
       };
-    }]);;'use strict';
-
-angular.module('obiba.form')
-
-  // http://codetunes.com/2013/server-form-validation-with-angular
-  .directive('formServerError', [function () {
-    return {
-      restrict: 'A',
-      require: '?ngModel',
-      link: function (scope, element, attrs, ctrl) {
-        return element.on('change', function () {
-          return scope.$apply(function () {
-            return ctrl.$setValidity('server', true);
-          });
-        });
-      }
-    };
-  }])
-
-  .directive('formInput', [function () {
-    return {
-      restrict: 'AE',
-      require: '^form',
-      scope: {
-        name: '@',
-        model: '=',
-        label: '@',
-        required: '@',
-        help: '@'
-      },
-      templateUrl: 'src/form/form-input-template.tpl.html',
-      link: function ($scope, elem, attr, ctrl) {
-        if (angular.isUndefined($scope.model) || $scope.model === null) {
-          $scope.model = '';
-        }
-        $scope.form = ctrl;
-      }
-    };
-  }])
-
-  .directive('formCheckbox', [function () {
-    return {
-      restrict: 'AE',
-      require: '^form',
-      scope: {
-        name: '@',
-        model: '=',
-        label: '@',
-        help: '@'
-      },
-      templateUrl: 'src/form/form-checkbox-template.tpl.html',
-      link: function ($scope, elem, attr, ctrl) {
-        if (angular.isUndefined($scope.model) || $scope.model === null) {
-          $scope.model = false;
-        }
-        $scope.form = ctrl;
-      }
-    };
-  }]);;'use strict';
+    });
+;'use strict';
 
 angular.module('obiba.notification', ['pascalprecht.translate', 'ui.bootstrap']);
 ;'use strict';
@@ -216,13 +123,114 @@ angular.module('obiba.rest', ['obiba.notification'])
     }]);
 ;'use strict';
 
-angular.module('obiba.utils', [])
+angular.module('obiba.form', ['obiba.utils', 'obiba.notification']);
+;'use strict';
 
-    .service('StringUtils', function () {
-      this.capitaliseFirstLetter = function (string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+angular.module('obiba.form')
+
+  .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils', 'NOTIFICATION_EVENTS',
+    function ($rootScope, $log, StringUtils, NOTIFICATION_EVENTS) {
+      this.error = function (response, form, languages) {
+//        $log.debug('FormServerValidation response', response);
+//        $log.debug('FormServerValidation form', form);
+//        $log.debug('FormServerValidation languages', languages);
+
+        if (response.data instanceof Array) {
+
+          var setFieldError = function (field, error) {
+            form[field].$dirty = true;
+            form[field].$setValidity('server', false);
+            if (form[field].errors === null) {
+              form[field].errors = [];
+            }
+            form[field].errors.push(StringUtils.capitaliseFirstLetter(error.message));
+          };
+
+          response.data.forEach(function (error) {
+            var fieldPrefix = error.path.split('.').slice(-2).join('.');
+            if (languages && languages.length) {
+              languages.forEach(function (lang) {
+                setFieldError(fieldPrefix + '-' + lang, error);
+              });
+            } else {
+              setFieldError(fieldPrefix, error);
+            }
+          });
+          $log.debug(form);
+        } else {
+          $rootScope.$broadcast(NOTIFICATION_EVENTS.showNotificationDialog, {
+            titleKey: 'form-server-error',
+            message: response.data ? response.data : angular.fromJson(response)
+          });
+        }
+
       };
-    });
+    }]);;'use strict';
+
+angular.module('obiba.form')
+
+  // http://codetunes.com/2013/server-form-validation-with-angular
+  .directive('formServerError', [function () {
+    return {
+      restrict: 'A',
+      require: '?ngModel',
+      link: function (scope, element, attrs, ctrl) {
+        return element.on('change', function () {
+          return scope.$apply(function () {
+            return ctrl.$setValidity('server', true);
+          });
+        });
+      }
+    };
+  }])
+
+  .directive('formInput', [function () {
+    return {
+      restrict: 'AE',
+      require: '^form',
+      scope: {
+        name: '@',
+        model: '=',
+        label: '@',
+        required: '@',
+        help: '@'
+      },
+      templateUrl: 'src/form/form-input-template.tpl.html',
+      link: function ($scope, elem, attr, ctrl) {
+        if (angular.isUndefined($scope.model) || $scope.model === null) {
+          $scope.model = '';
+        }
+        $scope.form = ctrl;
+      }
+    };
+  }])
+
+  .directive('formCheckbox', [function () {
+    return {
+      restrict: 'AE',
+      require: '^form',
+      scope: {
+        name: '@',
+        model: '=',
+        label: '@',
+        help: '@'
+      },
+      templateUrl: 'src/form/form-checkbox-template.tpl.html',
+      link: function ($scope, elem, attr, ctrl) {
+        if (angular.isUndefined($scope.model) || $scope.model === null) {
+          $scope.model = false;
+        }
+        $scope.form = ctrl;
+      }
+    };
+  }]);;'use strict';
+
+angular.module('ngObiba', [
+  'obiba.form',
+  'obiba.notification',
+  'obiba.rest',
+  'obiba.utils'
+]);
 ;angular.module('templates-main', ['form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
 
 angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache", function($templateCache) {

@@ -8,13 +8,14 @@ module.exports = function (grunt) {
       pkg: grunt.file.readJSON('package.json'),
       src: {
         js: [
-          'src/form/form.js',
-          'src/form/form-service.js',
-          'src/form/form-directive.js',
+          'src/utils/utils.js',
           'src/notification/notification.js',
           'src/notification/notification-controller.js',
           'src/rest/rest.js',
-          'src/utils/utils.js'
+          'src/form/form.js',
+          'src/form/form-service.js',
+          'src/form/form-directive.js',
+          'src/ng-obiba.js'
         ]
       }
     },

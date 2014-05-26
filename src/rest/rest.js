@@ -3,27 +3,7 @@
 angular.module('obiba.rest', ['obiba.notification'])
 
   .config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.responseInterceptors.push('loadingHttpInterceptor');
     $httpProvider.responseInterceptors.push('httpErrorsInterceptor');
-    $httpProvider.defaults.transformRequest.push(function (data) {
-      $('#httpLoading').show();
-      return data;
-    });
-  }])
-
-  // register the interceptor as a service, intercepts ALL angular ajax http calls
-  .factory('loadingHttpInterceptor', ['$q', function ($q) {
-    return function (promise) {
-      return promise.then(
-        function (response) {
-          $('#httpLoading').hide();
-          return response;
-        },
-        function (response) {
-          $('#httpLoading').hide();
-          return $q.reject(response);
-        });
-    };
   }])
 
   .factory('httpErrorsInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {

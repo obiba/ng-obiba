@@ -3,7 +3,7 @@
 angular.module('obiba.form')
 
   // http://codetunes.com/2013/server-form-validation-with-angular
-  .directive('serverError', [function () {
+  .directive('formServerError', [function () {
     return {
       restrict: 'A',
       require: '?ngModel',
@@ -28,7 +28,7 @@ angular.module('obiba.form')
         required: '@',
         help: '@'
       },
-      templateUrl: 'app/commons/form/form-input-template.tpl.html',
+      templateUrl: 'src/form/form-input-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
         if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = '';
@@ -48,7 +48,7 @@ angular.module('obiba.form')
         label: '@',
         help: '@'
       },
-      templateUrl: 'app/commons/form/form-checkbox-template.tpl.html',
+      templateUrl: 'src/form/form-checkbox-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
         if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = false;
@@ -92,7 +92,7 @@ angular.module('obiba.form')
         } else {
           $rootScope.$broadcast('showNotificationDialogEvent', {
             iconClass: 'fa-exclamation-triangle',
-            titleKey: 'study.save-error',
+            titleKey: 'form-server-error',
             message: response.data ? response.data : angular.fromJson(response)
           });
         }
@@ -103,67 +103,79 @@ angular.module('obiba.form')
 angular.module('obiba.form', ['obiba.utils', 'obiba.notification']);
 ;'use strict';
 
-angular.module('ngObiba', ['obiba.form', 'obiba.notification', 'obiba.rest', 'obiba.utils']);
+angular.module('ngObiba', [
+  'obiba.form',
+  'obiba.notification',
+  'obiba.rest',
+  'obiba.utils'
+]);
 ;'use strict';
 
 angular.module('obiba.notification')
 
-    .controller('NotificationController', ['$rootScope', '$scope', '$modal',
-      function ($rootScope, $scope, $modal) {
+  .constant('NOTIFICATION_EVENTS', {
+    showNotificationDialog: 'event-show-notification-dialog',
+    showConfirmDialog: 'event-show-confirmation-dialog',
+    confirmDialogAccepted: 'event-confirmation-accepted',
+    confirmDialogRejected: 'event-confirmation-rejected'
+  })
 
-        $scope.$on('showNotificationDialogEvent', function (event, notification) {
-          $modal.open({
-            templateUrl: 'app/notification/notification-modal.tpl.html',
-            controller: 'NotificationModalController',
-            resolve: {
-              notification: function () {
-                return notification;
-              }
+  .controller('NotificationController', ['$rootScope', '$scope', '$modal', 'NOTIFICATION_EVENTS',
+    function ($rootScope, $scope, $modal, NOTIFICATION_EVENTS) {
+
+      $scope.$on(NOTIFICATION_EVENTS.showNotificationDialog, function (event, notification) {
+        $modal.open({
+          templateUrl: 'src/notification/notification-modal.tpl.html',
+          controller: 'NotificationModalController',
+          resolve: {
+            notification: function () {
+              return notification;
             }
+          }
+        });
+      });
+
+      $scope.$on(NOTIFICATION_EVENTS.showConfirmDialog, function (event, confirm, args) {
+        $modal.open({
+          templateUrl: 'src/notification/notification-confirm-modal.tpl.html',
+          controller: 'NotificationConfirmationController',
+          resolve: {
+            confirm: function () {
+              return confirm;
+            }
+          }
+        }).result.then(function () {
+            $rootScope.$broadcast(NOTIFICATION_EVENTS.confirmDialogAccepted, args);
+          }, function () {
+            $rootScope.$broadcast(NOTIFICATION_EVENTS.confirmDialogRejected, args);
           });
-        });
+      });
 
-        $scope.$on('showConfirmDialogEvent', function (event, confirm, args) {
-          $modal.open({
-            templateUrl: 'app/notification/notification-confirm-modal.tpl.html',
-            controller: 'NotificationConfirmationController',
-            resolve: {
-              confirm: function () {
-                return confirm;
-              }
-            }
-          }).result.then(function () {
-                $rootScope.$broadcast('confirmDialogAcceptedEvent', args);
-              }, function () {
-                $rootScope.$broadcast('confirmDialogRejectedEvent', args);
-              });
-        });
+    }])
+  .controller('NotificationModalController', ['$scope', '$modalInstance', 'notification',
+    function ($scope, $modalInstance, notification) {
 
-      }])
-    .controller('NotificationModalController', ['$scope', '$modalInstance', 'notification',
-      function ($scope, $modalInstance, notification) {
+      $scope.notification = notification;
 
-        $scope.notification = notification;
+      $scope.close = function () {
+        $modalInstance.dismiss('close');
+      };
 
-        $scope.close = function () {
-          $modalInstance.dismiss('close');
-        };
+    }])
+  .controller('NotificationConfirmationController', ['$scope', '$modalInstance', 'confirm',
+    function ($scope, $modalInstance, confirm) {
 
-      }])
-    .controller('NotificationConfirmationController', ['$scope', '$modalInstance', 'confirm',
-      function ($scope, $modalInstance, confirm) {
+      $scope.confirm = confirm;
 
-        $scope.confirm = confirm;
+      $scope.ok = function () {
+        $modalInstance.close();
+      };
 
-        $scope.ok = function () {
-          $modalInstance.close();
-        };
+      $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+      };
 
-        $scope.cancel = function () {
-          $modalInstance.dismiss('cancel');
-        };
-
-      }]);
+    }]);
 
 ;'use strict';
 
@@ -173,27 +185,7 @@ angular.module('obiba.notification', ['pascalprecht.translate', 'ui.bootstrap'])
 angular.module('obiba.rest', ['obiba.notification'])
 
   .config(['$httpProvider', function ($httpProvider) {
-    $httpProvider.responseInterceptors.push('loadingHttpInterceptor');
     $httpProvider.responseInterceptors.push('httpErrorsInterceptor');
-    $httpProvider.defaults.transformRequest.push(function (data) {
-      $('#httpLoading').show();
-      return data;
-    });
-  }])
-
-  // register the interceptor as a service, intercepts ALL angular ajax http calls
-  .factory('loadingHttpInterceptor', ['$q', function ($q) {
-    return function (promise) {
-      return promise.then(
-        function (response) {
-          $('#httpLoading').hide();
-          return response;
-        },
-        function (response) {
-          $('#httpLoading').hide();
-          return $q.reject(response);
-        });
-    };
   }])
 
   .factory('httpErrorsInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {

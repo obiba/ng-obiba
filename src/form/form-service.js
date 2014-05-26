@@ -34,7 +34,7 @@ angular.module('obiba.form')
         } else {
           $rootScope.$broadcast('showNotificationDialogEvent', {
             iconClass: 'fa-exclamation-triangle',
-            titleKey: 'study.save-error',
+            titleKey: 'form-server-error',
             message: response.data ? response.data : angular.fromJson(response)
           });
         }

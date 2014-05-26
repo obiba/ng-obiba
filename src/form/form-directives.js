@@ -3,7 +3,7 @@
 angular.module('obiba.form')
 
   // http://codetunes.com/2013/server-form-validation-with-angular
-  .directive('serverError', [function () {
+  .directive('formServerError', [function () {
     return {
       restrict: 'A',
       require: '?ngModel',
@@ -28,7 +28,7 @@ angular.module('obiba.form')
         required: '@',
         help: '@'
       },
-      templateUrl: 'app/commons/form/form-input-template.tpl.html',
+      templateUrl: 'src/form/form-input-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
         if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = '';
@@ -48,7 +48,7 @@ angular.module('obiba.form')
         label: '@',
         help: '@'
       },
-      templateUrl: 'app/commons/form/form-checkbox-template.tpl.html',
+      templateUrl: 'src/form/form-checkbox-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
         if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = false;

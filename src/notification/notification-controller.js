@@ -45,6 +45,12 @@ angular.module('obiba.notification')
     function ($scope, $modalInstance, notification) {
 
       $scope.notification = notification;
+      if (!$scope.notification.iconClass) {
+        $scope.notification.iconClass = 'fa-exclamation-triangle';
+      }
+      if (!$scope.notification.title && !$scope.notification.titleKey) {
+        $scope.notification.titleKey = 'error';
+      }
 
       $scope.close = function () {
         $modalInstance.dismiss('close');

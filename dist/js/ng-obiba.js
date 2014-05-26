@@ -60,8 +60,8 @@ angular.module('obiba.form')
 
 angular.module('obiba.form')
 
-  .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils',
-    function ($rootScope, $log, StringUtils) {
+  .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils', 'NOTIFICATION_EVENTS',
+    function ($rootScope, $log, StringUtils, NOTIFICATION_EVENTS) {
       this.error = function (response, form, languages) {
 //        $log.debug('FormServerValidation response', response);
 //        $log.debug('FormServerValidation form', form);
@@ -90,8 +90,7 @@ angular.module('obiba.form')
           });
           $log.debug(form);
         } else {
-          $rootScope.$broadcast('showNotificationDialogEvent', {
-            iconClass: 'fa-exclamation-triangle',
+          $rootScope.$broadcast(NOTIFICATION_EVENTS.showNotificationDialog, {
             titleKey: 'form-server-error',
             message: response.data ? response.data : angular.fromJson(response)
           });
@@ -156,6 +155,12 @@ angular.module('obiba.notification')
     function ($scope, $modalInstance, notification) {
 
       $scope.notification = notification;
+      if (!$scope.notification.iconClass) {
+        $scope.notification.iconClass = 'fa-exclamation-triangle';
+      }
+      if (!$scope.notification.title && !$scope.notification.titleKey) {
+        $scope.notification.titleKey = 'error';
+      }
 
       $scope.close = function () {
         $modalInstance.dismiss('close');
@@ -188,29 +193,28 @@ angular.module('obiba.rest', ['obiba.notification'])
     $httpProvider.responseInterceptors.push('httpErrorsInterceptor');
   }])
 
-  .factory('httpErrorsInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
-    return function (promise) {
-      return promise.then(
-        function (response) {
-          // $log.debug('httpErrorsInterceptor success', response);
-          return response;
-        },
-        function (response) {
-          // $log.debug('httpErrorsInterceptor error', response);
-          var config = response.config;
-          if (config.errorHandler) {
+  .factory('httpErrorsInterceptor', ['$q', '$rootScope', 'NOTIFICATION_EVENTS',
+    function ($q, $rootScope, NOTIFICATION_EVENTS) {
+      return function (promise) {
+        return promise.then(
+          function (response) {
+            // $log.debug('httpErrorsInterceptor success', response);
+            return response;
+          },
+          function (response) {
+            // $log.debug('httpErrorsInterceptor error', response);
+            var config = response.config;
+            if (config.errorHandler) {
+              return $q.reject(response);
+            }
+            $rootScope.$broadcast(NOTIFICATION_EVENTS.showNotificationDialog, {
+              message: response.data ? response.data : angular.fromJson(response)
+            });
             return $q.reject(response);
-          }
-          $rootScope.$broadcast('showNotificationDialogEvent', {
-            iconClass: 'fa-exclamation-triangle',
-            titleKey: 'error',
-            message: response.data ? response.data : angular.fromJson(response)
           });
-          return $q.reject(response);
-        });
-    };
+      };
 
-  }]);
+    }]);
 ;'use strict';
 
 angular.module('obiba.utils', [])

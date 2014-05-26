@@ -2,8 +2,8 @@
 
 angular.module('obiba.form')
 
-  .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils',
-    function ($rootScope, $log, StringUtils) {
+  .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils', 'NOTIFICATION_EVENTS',
+    function ($rootScope, $log, StringUtils, NOTIFICATION_EVENTS) {
       this.error = function (response, form, languages) {
 //        $log.debug('FormServerValidation response', response);
 //        $log.debug('FormServerValidation form', form);
@@ -32,8 +32,7 @@ angular.module('obiba.form')
           });
           $log.debug(form);
         } else {
-          $rootScope.$broadcast('showNotificationDialogEvent', {
-            iconClass: 'fa-exclamation-triangle',
+          $rootScope.$broadcast(NOTIFICATION_EVENTS.showNotificationDialog, {
             titleKey: 'form-server-error',
             message: response.data ? response.data : angular.fromJson(response)
           });

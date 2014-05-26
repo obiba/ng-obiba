@@ -16,7 +16,11 @@ angular.module('obiba.utils', [])
     });
 ;'use strict';
 
-angular.module('obiba.notification', ['pascalprecht.translate', 'ui.bootstrap']);
+angular.module('obiba.notification', [
+  'templates-main',
+  'pascalprecht.translate',
+  'ui.bootstrap'
+]);
 ;'use strict';
 
 angular.module('obiba.notification')
@@ -123,7 +127,11 @@ angular.module('obiba.rest', ['obiba.notification'])
     }]);
 ;'use strict';
 
-angular.module('obiba.form', ['obiba.utils', 'obiba.notification']);
+angular.module('obiba.form', [
+  'obiba.utils',
+  'obiba.notification',
+  'templates-main'
+]);
 ;'use strict';
 
 angular.module('obiba.form')

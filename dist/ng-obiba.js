@@ -240,7 +240,7 @@ angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache"
     "      type=\"checkbox\"\n" +
     "      id=\"{{name}}\"\n" +
     "      name=\"{{name}}\"\n" +
-    "      server-error>\n" +
+    "      form-server-error>\n" +
     "\n" +
     "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +
     "    <li ng-show=\"form[name].$error.required\" translate>required</li>\n" +
@@ -269,7 +269,7 @@ angular.module("form/form-input-template.tpl.html", []).run(["$templateCache", f
     "      class=\"form-control\"\n" +
     "      id=\"{{name}}\"\n" +
     "      name=\"{{name}}\"\n" +
-    "      server-error\n" +
+    "      form-server-error\n" +
     "      ng-required=\"required\">\n" +
     "\n" +
     "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +

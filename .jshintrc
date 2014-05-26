@@ -21,7 +21,9 @@
   "quotmark": "single",
   "regexp": true,
   "globals": {
-    "angular": true
+    "angular": true,
+    "jQuery": true,
+    "$": true
   }
 
 }

@@ -30,8 +30,8 @@ angular.module('obiba.form')
       },
       templateUrl: 'app/commons/form/form-input-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
-        if (angular.isUndefined($scope.model) || $scope.model == null) {
-          $scope.model = "";
+        if (angular.isUndefined($scope.model) || $scope.model === null) {
+          $scope.model = '';
         }
         $scope.form = ctrl;
       }
@@ -50,7 +50,7 @@ angular.module('obiba.form')
       },
       templateUrl: 'app/commons/form/form-checkbox-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
-        if (angular.isUndefined($scope.model) || $scope.model == null) {
+        if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = false;
         }
         $scope.form = ctrl;
@@ -72,7 +72,9 @@ angular.module('obiba.form')
           var setFieldError = function (field, error) {
             form[field].$dirty = true;
             form[field].$setValidity('server', false);
-            if (form[field].errors == null) form[field].errors = [];
+            if (form[field].errors === null) {
+              form[field].errors = [];
+            }
             form[field].errors.push(StringUtils.capitaliseFirstLetter(error.message));
           };
 
@@ -89,13 +91,13 @@ angular.module('obiba.form')
           $log.debug(form);
         } else {
           $rootScope.$broadcast('showNotificationDialogEvent', {
-            iconClass: "fa-exclamation-triangle",
-            titleKey: "study.save-error",
+            iconClass: 'fa-exclamation-triangle',
+            titleKey: 'study.save-error',
             message: response.data ? response.data : angular.fromJson(response)
           });
         }
 
-      }
+      };
     }]);;'use strict';
 
 angular.module('obiba.form', ['obiba.utils', 'obiba.notification']);
@@ -173,8 +175,8 @@ angular.module('obiba.rest', ['obiba.notification'])
   .config(['$httpProvider', function ($httpProvider) {
     $httpProvider.responseInterceptors.push('loadingHttpInterceptor');
     $httpProvider.responseInterceptors.push('httpErrorsInterceptor');
-    $httpProvider.defaults.transformRequest.push(function (data, headersGetter) {
-      $('#loading').show();
+    $httpProvider.defaults.transformRequest.push(function (data) {
+      $('#httpLoading').show();
       return data;
     });
   }])
@@ -184,17 +186,17 @@ angular.module('obiba.rest', ['obiba.notification'])
     return function (promise) {
       return promise.then(
         function (response) {
-          $('#loading').hide();
+          $('#httpLoading').hide();
           return response;
         },
         function (response) {
-          $('#loading').hide();
+          $('#httpLoading').hide();
           return $q.reject(response);
         });
     };
   }])
 
-  .factory('httpErrorsInterceptor', ['$q', '$rootScope', '$log', function ($q, $rootScope, $log) {
+  .factory('httpErrorsInterceptor', ['$q', '$rootScope', function ($q, $rootScope) {
     return function (promise) {
       return promise.then(
         function (response) {
@@ -208,7 +210,7 @@ angular.module('obiba.rest', ['obiba.notification'])
             return $q.reject(response);
           }
           $rootScope.$broadcast('showNotificationDialogEvent', {
-            iconClass: "fa-exclamation-triangle",
+            iconClass: 'fa-exclamation-triangle',
             titleKey: 'error',
             message: response.data ? response.data : angular.fromJson(response)
           });
@@ -224,7 +226,7 @@ angular.module('obiba.utils', [])
     .service('StringUtils', function () {
       this.capitaliseFirstLetter = function (string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
-      }
+      };
     });
 ;angular.module('templates-main', ['form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
 

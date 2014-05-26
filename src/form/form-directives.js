@@ -31,7 +31,7 @@ angular.module('obiba.form')
       templateUrl: 'app/commons/form/form-input-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
         if (angular.isUndefined($scope.model) || $scope.model === null) {
-          $scope.model = "";
+          $scope.model = '';
         }
         $scope.form = ctrl;
       }

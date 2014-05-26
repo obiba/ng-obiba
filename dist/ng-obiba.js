@@ -33,7 +33,7 @@ angular.module('obiba.notification')
 
       $scope.$on(NOTIFICATION_EVENTS.showNotificationDialog, function (event, notification) {
         $modal.open({
-          templateUrl: 'src/notification/notification-modal.tpl.html',
+          templateUrl: 'notification/notification-modal.tpl.html',
           controller: 'NotificationModalController',
           resolve: {
             notification: function () {
@@ -45,7 +45,7 @@ angular.module('obiba.notification')
 
       $scope.$on(NOTIFICATION_EVENTS.showConfirmDialog, function (event, confirm, args) {
         $modal.open({
-          templateUrl: 'src/notification/notification-confirm-modal.tpl.html',
+          templateUrl: 'notification/notification-confirm-modal.tpl.html',
           controller: 'NotificationConfirmationController',
           resolve: {
             confirm: function () {
@@ -195,7 +195,7 @@ angular.module('obiba.form')
         required: '@',
         help: '@'
       },
-      templateUrl: 'src/form/form-input-template.tpl.html',
+      templateUrl: 'form/form-input-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
         if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = '';
@@ -215,7 +215,7 @@ angular.module('obiba.form')
         label: '@',
         help: '@'
       },
-      templateUrl: 'src/form/form-checkbox-template.tpl.html',
+      templateUrl: 'form/form-checkbox-template.tpl.html',
       link: function ($scope, elem, attr, ctrl) {
         if (angular.isUndefined($scope.model) || $scope.model === null) {
           $scope.model = false;

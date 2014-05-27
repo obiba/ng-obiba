@@ -9,19 +9,21 @@
 
 angular.module('obiba.utils', [])
 
-    .service('StringUtils', function () {
-      this.capitaliseFirstLetter = function (string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      };
-    });
-;'use strict';
+  .service('StringUtils', function () {
+    this.capitaliseFirstLetter = function (string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+  });
+;
+'use strict';
 
 angular.module('obiba.notification', [
   'templates-main',
   'pascalprecht.translate',
   'ui.bootstrap'
 ]);
-;'use strict';
+;
+'use strict';
 
 angular.module('obiba.notification')
 
@@ -95,7 +97,8 @@ angular.module('obiba.notification')
 
     }]);
 
-;'use strict';
+;
+'use strict';
 
 angular.module('obiba.rest', ['obiba.notification'])
 
@@ -125,14 +128,16 @@ angular.module('obiba.rest', ['obiba.notification'])
       };
 
     }]);
-;'use strict';
+;
+'use strict';
 
 angular.module('obiba.form', [
   'obiba.utils',
   'obiba.notification',
   'templates-main'
 ]);
-;'use strict';
+;
+'use strict';
 
 angular.module('obiba.form')
 
@@ -173,7 +178,9 @@ angular.module('obiba.form')
         }
 
       };
-    }]);;'use strict';
+    }]);
+;
+'use strict';
 
 angular.module('obiba.form')
 
@@ -231,7 +238,9 @@ angular.module('obiba.form')
         $scope.form = ctrl;
       }
     };
-  }]);;'use strict';
+  }]);
+;
+'use strict';
 
 angular.module('ngObiba', [
   'obiba.form',
@@ -239,118 +248,119 @@ angular.module('ngObiba', [
   'obiba.rest',
   'obiba.utils'
 ]);
-;angular.module('templates-main', ['form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
+;
+angular.module('templates-main', ['form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
 
-angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache", function($templateCache) {
+angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("form/form-checkbox-template.tpl.html",
     "<div class=\"checkbox\" ng-class=\"{'has-error': (form[fieldName].$dirty || form.saveAttempted) && form[name].$invalid}\">\n" +
-    "\n" +
-    "  <label for=\"{{name}}\" class=\"control-label\">\n" +
-    "    {{label | translate}}\n" +
-    "    <span ng-show=\"required\">*</span>\n" +
-    "  </label>\n" +
-    "\n" +
-    "  <input\n" +
-    "      ng-model=\"model\"\n" +
-    "      type=\"checkbox\"\n" +
-    "      id=\"{{name}}\"\n" +
-    "      name=\"{{name}}\"\n" +
-    "      form-server-error>\n" +
-    "\n" +
-    "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +
-    "    <li ng-show=\"form[name].$error.required\" translate>required</li>\n" +
-    "    <li ng-repeat=\"error in form[name].errors\">{{error}}</li>\n" +
-    "  </ul>\n" +
-    "\n" +
-    "  <p ng-show=\"help\" class=\"help-block\">{{help | translate}}</p>\n" +
-    "\n" +
-    "</div>\n" +
-    "\n" +
-    "");
+      "\n" +
+      "  <label for=\"{{name}}\" class=\"control-label\">\n" +
+      "    {{label | translate}}\n" +
+      "    <span ng-show=\"required\">*</span>\n" +
+      "  </label>\n" +
+      "\n" +
+      "  <input\n" +
+      "      ng-model=\"model\"\n" +
+      "      type=\"checkbox\"\n" +
+      "      id=\"{{name}}\"\n" +
+      "      name=\"{{name}}\"\n" +
+      "      form-server-error>\n" +
+      "\n" +
+      "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +
+      "    <li ng-show=\"form[name].$error.required\" translate>required</li>\n" +
+      "    <li ng-repeat=\"error in form[name].errors\">{{error}}</li>\n" +
+      "  </ul>\n" +
+      "\n" +
+      "  <p ng-show=\"help\" class=\"help-block\">{{help | translate}}</p>\n" +
+      "\n" +
+      "</div>\n" +
+      "\n" +
+      "");
 }]);
 
-angular.module("form/form-input-template.tpl.html", []).run(["$templateCache", function($templateCache) {
+angular.module("form/form-input-template.tpl.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("form/form-input-template.tpl.html",
     "<div class=\"form-group\" ng-class=\"{'has-error': (form[name].$dirty || form.saveAttempted) && form[name].$invalid}\">\n" +
-    "\n" +
-    "  <label for=\"{{name}}\" class=\"control-label\">\n" +
-    "    {{label | translate}}\n" +
-    "    <span ng-show=\"required\">*</span>\n" +
-    "  </label>\n" +
-    "\n" +
-    "  <input\n" +
-    "      ng-model=\"model\"\n" +
-    "      type=\"text\"\n" +
-    "      class=\"form-control\"\n" +
-    "      id=\"{{name}}\"\n" +
-    "      name=\"{{name}}\"\n" +
-    "      form-server-error\n" +
-    "      ng-required=\"required\">\n" +
-    "\n" +
-    "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +
-    "    <li ng-show=\"form[name].$error.required\" translate>required</li>\n" +
-    "    <li ng-repeat=\"error in form[name].errors\">{{error}}</li>\n" +
-    "  </ul>\n" +
-    "\n" +
-    "  <p ng-show=\"help\" class=\"help-block\">{{help | translate}}</p>\n" +
-    "\n" +
-    "</div>");
+      "\n" +
+      "  <label for=\"{{name}}\" class=\"control-label\">\n" +
+      "    {{label | translate}}\n" +
+      "    <span ng-show=\"required\">*</span>\n" +
+      "  </label>\n" +
+      "\n" +
+      "  <input\n" +
+      "      ng-model=\"model\"\n" +
+      "      type=\"text\"\n" +
+      "      class=\"form-control\"\n" +
+      "      id=\"{{name}}\"\n" +
+      "      name=\"{{name}}\"\n" +
+      "      form-server-error\n" +
+      "      ng-required=\"required\">\n" +
+      "\n" +
+      "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +
+      "    <li ng-show=\"form[name].$error.required\" translate>required</li>\n" +
+      "    <li ng-repeat=\"error in form[name].errors\">{{error}}</li>\n" +
+      "  </ul>\n" +
+      "\n" +
+      "  <p ng-show=\"help\" class=\"help-block\">{{help | translate}}</p>\n" +
+      "\n" +
+      "</div>");
 }]);
 
-angular.module("notification/notification-confirm-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+angular.module("notification/notification-confirm-modal.tpl.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("notification/notification-confirm-modal.tpl.html",
     "<div class=\"modal-content\">\n" +
-    "\n" +
-    "  <div class=\"modal-header\">\n" +
-    "    <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-click=\"cancel()\">&times;</button>\n" +
-    "    <h4 class=\"modal-title\">\n" +
-    "      <i class=\"fa fa-exclamation-triangle\"></i>\n" +
-    "      <span ng-hide=\"confirm.title\" translate>confirmation</span>\n" +
-    "      {{confirm.title}}\n" +
-    "    </h4>\n" +
-    "  </div>\n" +
-    "\n" +
-    "  <div class=\"modal-body\">\n" +
-    "    <p>{{confirm.message}}</p>\n" +
-    "  </div>\n" +
-    "\n" +
-    "  <div class=\"modal-footer\">\n" +
-    "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
-    "      <span ng-hide=\"confirm.cancel\" translate>cancel</span>\n" +
-    "      {{confirm.cancel}}\n" +
-    "    </button>\n" +
-    "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"ok()\">\n" +
-    "      <span ng-hide=\"confirm.ok\" translate>ok</span>\n" +
-    "      {{confirm.ok}}\n" +
-    "    </button>\n" +
-    "  </div>\n" +
-    "\n" +
-    "</div>");
+      "\n" +
+      "  <div class=\"modal-header\">\n" +
+      "    <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-click=\"cancel()\">&times;</button>\n" +
+      "    <h4 class=\"modal-title\">\n" +
+      "      <i class=\"fa fa-exclamation-triangle\"></i>\n" +
+      "      <span ng-hide=\"confirm.title\" translate>confirmation</span>\n" +
+      "      {{confirm.title}}\n" +
+      "    </h4>\n" +
+      "  </div>\n" +
+      "\n" +
+      "  <div class=\"modal-body\">\n" +
+      "    <p>{{confirm.message}}</p>\n" +
+      "  </div>\n" +
+      "\n" +
+      "  <div class=\"modal-footer\">\n" +
+      "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"cancel()\">\n" +
+      "      <span ng-hide=\"confirm.cancel\" translate>cancel</span>\n" +
+      "      {{confirm.cancel}}\n" +
+      "    </button>\n" +
+      "    <button type=\"button\" class=\"btn btn-primary\" ng-click=\"ok()\">\n" +
+      "      <span ng-hide=\"confirm.ok\" translate>ok</span>\n" +
+      "      {{confirm.ok}}\n" +
+      "    </button>\n" +
+      "  </div>\n" +
+      "\n" +
+      "</div>");
 }]);
 
-angular.module("notification/notification-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
+angular.module("notification/notification-modal.tpl.html", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("notification/notification-modal.tpl.html",
     "<div class=\"modal-content\">\n" +
-    "\n" +
-    "  <div class=\"modal-header\">\n" +
-    "    <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-click=\"close()\">&times;</button>\n" +
-    "    <h4 class=\"modal-title\">\n" +
-    "      <i ng-hide=\"notification.iconClass\" class=\"fa fa-info-circle\"></i>\n" +
-    "      <i ng-show=\"notification.iconClass\" class=\"fa {{notification.iconClass}}\"></i>\n" +
-    "      <span ng-hide=\"notification.title\" translate>{{notification.titleKey || 'notification'}}</span>\n" +
-    "      {{notification.title}}\n" +
-    "    </h4>\n" +
-    "  </div>\n" +
-    "\n" +
-    "  <div class=\"modal-body\">\n" +
-    "    <p>{{notification.message}}</p>\n" +
-    "  </div>\n" +
-    "\n" +
-    "  <div class=\"modal-footer\">\n" +
-    "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"close()\">\n" +
-    "      <span translate>close</span>\n" +
-    "    </button>\n" +
-    "  </div>\n" +
-    "\n" +
-    "</div>");
+      "\n" +
+      "  <div class=\"modal-header\">\n" +
+      "    <button type=\"button\" class=\"close\" aria-hidden=\"true\" ng-click=\"close()\">&times;</button>\n" +
+      "    <h4 class=\"modal-title\">\n" +
+      "      <i ng-hide=\"notification.iconClass\" class=\"fa fa-info-circle\"></i>\n" +
+      "      <i ng-show=\"notification.iconClass\" class=\"fa {{notification.iconClass}}\"></i>\n" +
+      "      <span ng-hide=\"notification.title\" translate>{{notification.titleKey || 'notification'}}</span>\n" +
+      "      {{notification.title}}\n" +
+      "    </h4>\n" +
+      "  </div>\n" +
+      "\n" +
+      "  <div class=\"modal-body\">\n" +
+      "    <p>{{notification.message}}</p>\n" +
+      "  </div>\n" +
+      "\n" +
+      "  <div class=\"modal-footer\">\n" +
+      "    <button type=\"button\" class=\"btn btn-default\" ng-click=\"close()\">\n" +
+      "      <span translate>close</span>\n" +
+      "    </button>\n" +
+      "  </div>\n" +
+      "\n" +
+      "</div>");
 }]);

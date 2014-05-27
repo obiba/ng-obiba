@@ -82,6 +82,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['clean', 'jshint', 'karma', 'html2js', 'concat', 'uglify']);
+  grunt.registerTask('default', ['clean', 'jshint', 'html2js', 'concat', 'karma', 'uglify']);
 
 };

@@ -14,7 +14,17 @@ Download dependencies:
 
 ```
 npm install
+bower install
 ```
+
+Build project:
+
+```
+grunt
+```
+
+Test coverage available in `/coverage` dir.
+
 
 ## Bug tracker
 

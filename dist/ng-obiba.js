@@ -64,6 +64,7 @@ angular.module('obiba.notification')
       });
 
     }])
+
   .controller('NotificationModalController', ['$scope', '$modalInstance', 'notification',
     function ($scope, $modalInstance, notification) {
 
@@ -80,6 +81,7 @@ angular.module('obiba.notification')
       };
 
     }])
+
   .controller('NotificationConfirmationController', ['$scope', '$modalInstance', 'confirm',
     function ($scope, $modalInstance, confirm) {
 

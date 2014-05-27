@@ -18,6 +18,7 @@ describe('StringUtils tests', function () {
 
   // check to see if it has the expected function
   it('should have a capitaliseFirstLetter function', function () {
+    //console.debug('Run should have a capitaliseFirstLetter function');
     expect(angular.isFunction(stringUtils.capitaliseFirstLetter)).toBe(true);
   });
 

@@ -12,10 +12,10 @@ module.exports = function (config) {
     files: [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-translate/angular-translate.js',
-      'bower_components/angular-ui/build/angular-ui.js',
+      'bower_components/angular-translate/angular-translate.min.js',
+      'bower_components/angular-bootstrap/ui-bootstrap.min.js',
       'dist/**/*.js',
-      'src/**/*Spec.js'
+      'src/**/*-spec.js'
     ],
 
     // list of files / patterns to exclude

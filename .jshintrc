@@ -21,9 +21,19 @@
   "quotmark": "single",
   "regexp": true,
   "globals": {
-    "angular": true,
-    "jQuery": true,
-    "$": true
+    "angular": false,
+    // jquery
+    "jQuery": false,
+    "$": false,
+    // jasmine
+    "describe": false,
+    "it": false,
+    "before": false,
+    "beforeEach": false,
+    "after": false,
+    "afterEach": false,
+    "expect": false,
+    "inject": false
   }
 
 }

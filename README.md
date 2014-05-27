@@ -1,6 +1,6 @@
 # OBiBa AngularJS commons
 
-## How to build
+## How to build?
 
 Install NodeJS, Grunt and Bower:
 
@@ -24,6 +24,20 @@ grunt
 ```
 
 Test coverage available in `/coverage` dir.
+
+## How to use it?
+
+In your project add a dependency to ng-obiba:
+
+```
+bower install git@github.com:obiba/ng-obiba.git --save
+```
+
+To update to latest ng-obiba version:
+
+```
+bower update
+```
 
 
 ## Bug tracker

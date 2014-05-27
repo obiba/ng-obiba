@@ -1,6 +1,7 @@
 node
 node_modules
 bower_components
+coverage
 .idea
 *.iml
 .classpath

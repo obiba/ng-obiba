@@ -24,5 +24,7 @@ describe('StringUtils tests', function () {
   it('should capitalise first letter', function () {
     expect(stringUtils.capitaliseFirstLetter('bar')).toBe('Bar');
     expect(stringUtils.capitaliseFirstLetter('BAR')).toBe('BAR');
+    expect(stringUtils.capitaliseFirstLetter()).toBe(null);
+    expect(stringUtils.capitaliseFirstLetter('')).toBe(null);
   });
 });

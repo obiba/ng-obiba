@@ -4,7 +4,7 @@ describe('StringUtils tests', function () {
 
   var stringUtils;
 
-  // excuted before each "it" is run.
+  // executed before each "it" is run.
   beforeEach(function () {
 
     // load the module.
@@ -24,7 +24,7 @@ describe('StringUtils tests', function () {
   it('should capitalise first letter', function () {
     expect(stringUtils.capitaliseFirstLetter('bar')).toBe('Bar');
     expect(stringUtils.capitaliseFirstLetter('BAR')).toBe('BAR');
-    expect(stringUtils.capitaliseFirstLetter()).toBe(null);
+    expect(stringUtils.capitaliseFirstLetter(null)).toBe(null);
     expect(stringUtils.capitaliseFirstLetter('')).toBe(null);
   });
 });

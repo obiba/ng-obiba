@@ -21,7 +21,10 @@ module.exports = function (grunt) {
       }
     },
 
-    clean: ['<%= destination_dir %>/bower_components', 'tmp', 'dist'],
+    clean: {
+      build: ['<%= destination_dir %>/bower_components', 'tmp', 'dist'],
+      tmp: ['tmp']
+    },
 
     karma: {
       unit: {
@@ -82,6 +85,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-html2js');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['clean', 'jshint', 'html2js', 'concat', 'karma', 'uglify']);
+  grunt.registerTask('default', ['clean:build', 'jshint', 'html2js', 'concat', 'clean:tmp', 'karma', 'uglify']);
 
 };

@@ -43,7 +43,7 @@ angular.module('obiba.form')
             }
             scope.form = ctrl;
           }
-        }
+        };
       }
     };
   }])
@@ -70,7 +70,7 @@ angular.module('obiba.form')
             }
             $scope.form = ctrl;
           }
-        }
+        };
       }
     };
   }])

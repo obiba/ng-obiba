@@ -7,11 +7,14 @@ angular.module('obiba.alert')
       var alertsMap = {};
 
       $rootScope.$on(ALERT_EVENTS.showAlert, function (event, alert, id) {
-        alertsMap[id].push(alert);
+        if (alertsMap[id]) {
+          alertsMap[id].push(alert);
+        }
       });
 
       return {
         restrict: 'E',
+        //template: '<alert ng-repeat="alert in alerts" type="alert.type" close="close($index)" ng-bind-html="alert.message"></alert>',
         template: '<alert ng-repeat="alert in alerts" type="alert.type" close="close($index)">{{alert.message}}</alert>',
         compile: function(element) {
           var id = element.attr('id');
@@ -35,9 +38,6 @@ angular.module('obiba.alert')
                */
               scope.close = function(index) {
                 scope.alerts.splice(index, 1);
-                if (scope.alerts.length === 0) {
-                  delete alertsMap[id];
-                }
               };
 
               /**

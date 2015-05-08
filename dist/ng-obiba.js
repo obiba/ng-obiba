@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2015-05-07
+ * Date: 2015-05-08
  */
 'use strict';
 
@@ -13,7 +13,27 @@ angular.module('obiba.utils', [])
     this.capitaliseFirstLetter = function (string) {
       return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
     };
-  });
+  })
+
+  .service('LocaleStringUtils', ['$filter', function ($filter) {
+    this.translate = function (key, args) {
+
+      function buildMessageArguments(args) {
+        if (args &&  args instanceof Array) {
+          var messageArgs = {};
+          args.forEach(function(arg, index) {
+            messageArgs['arg'+index] = arg;
+          });
+
+          return messageArgs;
+        }
+
+        return {};
+      }
+
+      return $filter('translate')(key, buildMessageArguments(args));
+    };
+  }]);
 ;'use strict';
 
 angular.module('obiba.notification', [
@@ -82,10 +102,17 @@ angular.module('obiba.notification')
 
     }])
 
-  .controller('NotificationConfirmationController', ['$scope', '$modalInstance', 'confirm',
-    function ($scope, $modalInstance, confirm) {
+  .controller('NotificationConfirmationController', ['$scope', '$modalInstance', 'confirm', 'LocaleStringUtils',
+    function ($scope, $modalInstance, confirm, LocaleStringUtils) {
 
-      $scope.confirm = confirm;
+      function getMessage() {
+        return {
+          title: confirm.titleKey ? LocaleStringUtils.translate(confirm.titleKey) : confirm.title,
+          message: confirm.messageKey ? LocaleStringUtils.translate(confirm.messageKey, confirm.messageArgs) : confirm.message
+        };
+      }
+
+      $scope.confirm = getMessage();
 
       $scope.ok = function () {
         $modalInstance.close();
@@ -138,8 +165,8 @@ angular.module('obiba.form', [
 
 angular.module('obiba.form')
 
-  .service('FormServerValidation', ['$rootScope', '$log', '$filter', 'StringUtils', 'NOTIFICATION_EVENTS',
-    function ($rootScope, $log, $filter, StringUtils, NOTIFICATION_EVENTS) {
+  .service('FormServerValidation', ['$rootScope', '$log', 'StringUtils', 'LocaleStringUtils', 'NOTIFICATION_EVENTS',
+    function ($rootScope, $log, StringUtils, LocaleStringUtils, NOTIFICATION_EVENTS) {
       this.error = function (response, form, languages) {
 
         if (response.data instanceof Array) {
@@ -179,7 +206,7 @@ angular.module('obiba.form')
 
         if (data) {
           if (data.messageTemplate) {
-            message = $filter('translate')(data.messageTemplate, buildMessageArguments(data.arguments));
+            message = LocaleStringUtils.translate(data.messageTemplate, data.arguments);
             if (message === data.messageTemplate) {
               message = null;
             }
@@ -191,19 +218,6 @@ angular.module('obiba.form')
         }
 
         return message ? message : angular.fromJson(response);
-      }
-
-      function buildMessageArguments(args) {
-        if (args &&  args instanceof Array) {
-          var messageArgs = {};
-          args.forEach(function(arg, index) {
-            messageArgs['arg'+index] = arg;
-          });
-
-          return messageArgs;
-        }
-
-        return {};
       }
 
     }]);;'use strict';
@@ -360,7 +374,8 @@ angular.module('obiba.form')
 angular.module('obiba.alert', [
   'templates-main',
   'pascalprecht.translate',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ngSanitize'
 ]);
 ;'use strict';
 
@@ -370,16 +385,30 @@ angular.module('obiba.alert')
     showAlert: 'event:show-alert'
   })
 
-  .service('AlertService', ['$rootScope', '$log', 'ALERT_EVENTS',
-    function ($rootScope, $log, ALERT_EVENTS) {
+  .service('AlertService', ['$rootScope', '$log', 'LocaleStringUtils', 'ALERT_EVENTS',
+    function ($rootScope, $log, LocaleStringUtils, ALERT_EVENTS) {
 
-      this.alert = function (id, message, type, delay) {
+      function getValidMessage(options) {
+        var value = LocaleStringUtils.translate(options.msgKey, options.msgArgs);
+        if (value === options.msgKey) {
+          if (options.msg) {
+            return options.msg;
+          }
+
+          $log.error('No message was provided for the alert!');
+          return '';
+        }
+
+        return value;
+      }
+
+      this.alert = function (options) {
         $rootScope.$broadcast(ALERT_EVENTS.showAlert, {
           uid: new Date().getTime(), // useful for delay closing and cleanup
-          message: message,
-          type: type ? type : 'info',
-          timeoutDelay: delay && delay > 0 ? delay : 0
-        }, id);
+          message: getValidMessage(options),
+          type: options.type ? options.type : 'info',
+          timeoutDelay: options.delay ? Math.max(0, options.delay) : 0
+        }, options.id);
       };
     }]);
 ;'use strict';
@@ -391,11 +420,14 @@ angular.module('obiba.alert')
       var alertsMap = {};
 
       $rootScope.$on(ALERT_EVENTS.showAlert, function (event, alert, id) {
-        alertsMap[id].push(alert);
+        if (alertsMap[id]) {
+          alertsMap[id].push(alert);
+        }
       });
 
       return {
         restrict: 'E',
+        //template: '<alert ng-repeat="alert in alerts" type="alert.type" close="close($index)" ng-bind-html="alert.message"></alert>',
         template: '<alert ng-repeat="alert in alerts" type="alert.type" close="close($index)">{{alert.message}}</alert>',
         compile: function(element) {
           var id = element.attr('id');
@@ -419,9 +451,6 @@ angular.module('obiba.alert')
                */
               scope.close = function(index) {
                 scope.alerts.splice(index, 1);
-                if (scope.alerts.length === 0) {
-                  delete alertsMap[id];
-                }
               };
 
               /**
@@ -479,7 +508,8 @@ angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache"
     "      type=\"checkbox\"\n" +
     "      id=\"{{name}}\"\n" +
     "      name=\"{{name}}\"\n" +
-    "      form-server-error>\n" +
+    "      form-server-error\n" +
+    "      ng-required=\"required\">\n" +
     "\n" +
     "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +
     "    <li ng-show=\"form[name].$error.required\" translate>required</li>\n" +

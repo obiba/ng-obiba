@@ -6,15 +6,29 @@ angular.module('obiba.alert')
     showAlert: 'event:show-alert'
   })
 
-  .service('AlertService', ['$rootScope', '$log', 'ALERT_EVENTS',
-    function ($rootScope, $log, ALERT_EVENTS) {
+  .service('AlertService', ['$rootScope', '$log', 'LocaleStringUtils', 'ALERT_EVENTS',
+    function ($rootScope, $log, LocaleStringUtils, ALERT_EVENTS) {
 
-      this.alert = function (id, message, type, delay) {
+      function getValidMessage(options) {
+        var value = LocaleStringUtils.translate(options.msgKey, options.msgArgs);
+        if (value === options.msgKey) {
+          if (options.msg) {
+            return options.msg;
+          }
+
+          $log.error('No message was provided for the alert!');
+          return '';
+        }
+
+        return value;
+      }
+
+      this.alert = function (options) {
         $rootScope.$broadcast(ALERT_EVENTS.showAlert, {
           uid: new Date().getTime(), // useful for delay closing and cleanup
-          message: message,
-          type: type ? type : 'info',
-          timeoutDelay: delay && delay > 0 ? delay : 0
-        }, id);
+          message: getValidMessage(options),
+          type: options.type ? options.type : 'info',
+          timeoutDelay: options.delay ? Math.max(0, options.delay) : 0
+        }, options.id);
       };
     }]);

@@ -3,5 +3,6 @@
 angular.module('obiba.alert', [
   'templates-main',
   'pascalprecht.translate',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ngSanitize'
 ]);

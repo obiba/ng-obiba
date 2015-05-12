@@ -2,19 +2,20 @@
 
 describe('httpErrorsInterceptor tests', function () {
 
-  var $rootScope, $httpBackend;
+  var $rootScope, $httpBackend, ServerErrorUtils;
 
   // executed before each "it" is run.
   beforeEach(function () {
 
     // load the module.
     module('obiba.rest');
+    module('obiba.utils');
 
-    inject(function (_$rootScope_, _$httpBackend_) {
+    inject(function (_$rootScope_, _$httpBackend_, _ServerErrorUtils_) {
       $rootScope = _$rootScope_;
 //      spyOn($rootScope, '$broadcast').andCallThrough();
       spyOn($rootScope, '$broadcast');
-
+      ServerErrorUtils = _ServerErrorUtils_;
       $httpBackend = _$httpBackend_;
       $httpBackend.when('GET', '/success').respond(200, 'success');
       $httpBackend.when('GET', '/error').respond(500, 'error');

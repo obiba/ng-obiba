@@ -25,6 +25,7 @@
     // jquery
     "jQuery": false,
     "$": false,
+    "document": false,
     // jasmine
     "describe": false,
     "it": false,

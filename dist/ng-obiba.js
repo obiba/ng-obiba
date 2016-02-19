@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-01-07
+ * Date: 2016-02-19
  */
 'use strict';
 
@@ -560,6 +560,19 @@ angular.module('obiba.utils', [])
     this.capitaliseFirstLetter = function (string) {
       return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
     };
+
+    this.replaceAll = function(str, mapObj) {
+      var re = new RegExp(Object.keys(mapObj).join('|'),'gi');
+
+      return str.replace(re, function(matched){
+        return mapObj[matched.toLowerCase()];
+      });
+    };
+
+    this.truncate = function (text, size) {
+      var max = size || 30;
+      return text.length > max ? text.substring(0, max) + '...' : text;
+    };
   })
 
   .service('LocaleStringUtils', ['$filter', function ($filter) {
@@ -1005,7 +1018,7 @@ angular.module('obiba.alert')
 
       return {
         restrict: 'E',
-        template: '<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close($index)"><span ng-bind-html="alert.message"></span></alert>',
+        template: '<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="close($index)"><span ng-bind-html="alert.message"></span></uib-alert>',
         compile: function(element) {
           var id = element.attr('id');
           if (!id) {

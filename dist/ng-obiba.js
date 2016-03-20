@@ -1247,7 +1247,7 @@ angular.module('ngObiba', [
 angular.module("alert/alert-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("alert/alert-template.tpl.html",
     "<uib-alert ng-repeat=\"alert in alerts\"\n" +
-    "           class=\"{{alert.growl ? alert-growl : ''}}\"\n" +
+    "           class=\"{{alert.growl ? 'alert-growl' : ''}}\"\n" +
     "           type=\"{{alert.type}}\"\n" +
     "           close=\"close($index)\">\n" +
     "  <span ng-bind-html=\"alert.message\"></span>\n" +

@@ -17,8 +17,8 @@
   ],
   "dependencies": {
     "angular": "1.5.2",
-    "angular-bootstrap": "0.14.3",
-    "angular-translate": "2.8.1",
+    "angular-bootstrap": "1.2.5",
+    "angular-translate": "2.11.0",
     "angular-sanitize": "1.5.2",
     "angular-marked": "1.0.1",
     "angular-moment": "0.10.3"

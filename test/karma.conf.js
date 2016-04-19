@@ -14,6 +14,7 @@ module.exports = function (config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'bower_components/angular-translate/angular-translate.min.js',
       'bower_components/angular-bootstrap/ui-bootstrap.min.js',
+      'node_modules/phantomjs-polyfill/bind-polyfill.js',
       'dist/**/*.js',
       'src/**/*-spec.js'
     ],

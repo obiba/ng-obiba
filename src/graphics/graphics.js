@@ -3,7 +3,7 @@
 angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
   .factory('D3GeoConfig', [function () {
     function D3GeoConfig () {
-      this.data = []; // based on studyResultDto['obiba.mica.TermsAggregationResultDto.terms'] for 'populations-selectionCriteria-countriesIso' aggregation
+      this.data = [];
       this.color = '#2077b2'; // the lightest color
       this._dimensions = {width: 960, height: 500}; // default geoMercator translate dimensions
       this._scale = 150; // default geoMercator scale
@@ -41,7 +41,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
       var options = {
         chart: {
           x: function (d) { return d.title; },
-          y: function (d) { return d.count; },
+          y: function (d) { return d.value; },
           yAxis: {
             tickFormat: function (d) { return d3.format(',.0f')(d); }
           },
@@ -88,14 +88,17 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
 
     D3ChartConfig.prototype.withType = function (type) {
       this.options.chart.type = type;
+      return this;
     };
 
     D3ChartConfig.prototype.withTitle = function (title) {
-      this.options.chart.title = {text: title, enable: true};
+      this.options.title = {text: title, enable: true};
+      return this;
     };
 
     D3ChartConfig.prototype.withSubtitle = function (subtitle) {
-      this.options.chart.subtitle = {text: subtitle, enable: true};
+      this.options.subtitle = {text: subtitle, enable: true};
+      return this;
     };
 
     D3ChartConfig.prototype.withData = function (data, override, key) {
@@ -127,7 +130,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
         // data
         var data = {};
         // assuming config.data: [{key: X1, title: Y1, default: Z1, count: A1}, {key: Xn, title: Yn, default: Zn, count: An}, ...]
-        scope.config.data.forEach(function (d) { data[d.key] = d.count; });
+        scope.config.data.forEach(function (d) { data[d.key] = d.value; });
 
         // colors
         var max = 0;
@@ -140,6 +143,16 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
         var color = d3.scale.threshold()
             .domain([0, max])
             .range(d3.range(0, max, 1).map(function (i) { return d3.rgb(scope.config.color).darker(i); }));
+
+        // title
+        var title = scope.config.title;
+        if (title) {
+          d3.select(element[0]).append('div').attr('class', 'title h4').style('text-align', 'center').text(title);
+        }
+
+        // tooltip
+        var tooltip = d3.select(element[0]).append('div')
+            .attr('class', 'hidden chart-tooltip');
 
         // map
         var parentElement = element.parent()[0];
@@ -157,13 +170,23 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
             .data(ObibaCountriesGeoJson.features)
             .enter()
             .append('path').attr('d', path)
-            .style('fill', function (d) { return data[d.id] ? color(data[d.id]) : d3.rgb('#ccc'); }).style('stroke', '#fff');
+            .style('fill', function (d) { return data[d.id] ? color(data[d.id]) : d3.rgb('#ccc'); }).style('stroke', '#fff')
+            .on('mousemove', function (d) {
+              var mouse = d3.mouse(svg.node()).map(function(d) {
+                return parseInt(d);
+              });
+              var tooltipText = d.properties.name;
+              if (typeof data[d.id] !== 'undefined') {
+                tooltipText = tooltipText + ' <strong>' + data[d.id] + '</strong>';
+              }
 
-        // title
-        var title = scope.config.title;
-        if (title) {
-          scope.title = title;
-        }
+              tooltip.classed('hidden', false)
+                  .attr('style', 'left:' + (mouse[0] + 5) + 'px; top:' + (mouse[1] - 5) + 'px; position: absolute')
+                  .html(tooltipText);
+            })
+            .on('mouseout', function () {
+              tooltip.classed('hidden', true);
+            });
       }
 
       return {

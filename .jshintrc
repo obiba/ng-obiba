@@ -23,11 +23,10 @@
   "globals": {
     "angular": false,
     "d3": true,
-    // jquery
+    "window": true,
     "jQuery": false,
     "$": false,
     "document": false,
-    // jasmine
     "describe": false,
     "it": false,
     "before": false,

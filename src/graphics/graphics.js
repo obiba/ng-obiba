@@ -38,6 +38,13 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
   .factory('D3ChartConfig', [function () {
 
     function D3ChartConfig(aggregation) {
+      function elementClick (o) {
+        var link = o.data.link;
+        if (link && window) {
+          window.location = link;
+        }
+      }
+
       var options = {
         chart: {
           x: function (d) { return d.title; },
@@ -50,6 +57,9 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
           labelThreshold: 0.01,
           groupSpacing: 0.5,
           height: 250,
+          reduceXTicks: false,
+          stacked: true,
+          showControls: false,
           tooltip: {
             contentGenerator: function (o) {
               var series = o.series[0];
@@ -62,6 +72,16 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
               }
 
               return '<div class="chart-tooltip">' + s + bottom + '</div>';
+            }
+          },
+          multibar: {
+            dispatch: {
+              elementClick: elementClick
+            }
+          },
+          pie: {
+            dispatch: {
+              elementClick: elementClick
             }
           }
         },
@@ -78,7 +98,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
           options.chart.type = 'pieChart';
           break;
         default:
-          options.chart.type = 'discreteBarChart';
+          options.chart.type = 'multiBarChart';
           break;
       }
 

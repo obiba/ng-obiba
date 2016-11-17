@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-11-11
+ * Date: 2016-11-17
  */
 'use strict';
 
@@ -45,6 +45,13 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
   .factory('D3ChartConfig', [function () {
 
     function D3ChartConfig(aggregation) {
+      function elementClick (o) {
+        var link = o.data.link;
+        if (link && window) {
+          window.location = link;
+        }
+      }
+
       var options = {
         chart: {
           x: function (d) { return d.title; },
@@ -57,6 +64,9 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
           labelThreshold: 0.01,
           groupSpacing: 0.5,
           height: 250,
+          reduceXTicks: false,
+          stacked: true,
+          showControls: false,
           tooltip: {
             contentGenerator: function (o) {
               var series = o.series[0];
@@ -69,6 +79,16 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
               }
 
               return '<div class="chart-tooltip">' + s + bottom + '</div>';
+            }
+          },
+          multibar: {
+            dispatch: {
+              elementClick: elementClick
+            }
+          },
+          pie: {
+            dispatch: {
+              elementClick: elementClick
             }
           }
         },
@@ -85,7 +105,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
           options.chart.type = 'pieChart';
           break;
         default:
-          options.chart.type = 'discreteBarChart';
+          options.chart.type = 'multiBarChart';
           break;
       }
 
@@ -900,6 +920,7 @@ angular.module('obiba.form')
         showTitle: '=',
         description: '=',
         autoComplete: '=',
+        disabled: '=',
         items: '=',
         model: '='
       },
@@ -1411,7 +1432,7 @@ angular.module("form/form-ui-select.tpl.html", []).run(["$templateCache", functi
   $templateCache.put("form/form-ui-select.tpl.html",
     "<div class=\"form-group\">\n" +
     "  <label class=\"control-label\" ng-show=\"showTitle\">{{title}}</label>\n" +
-    "  <ui-select multiple=\"multiple\" theme=\"bootstrap\" ng-model=\"data.selected\" reset-search-input=\"true\">\n" +
+    "  <ui-select ng-disabled=\"disabled\" multiple=\"multiple\" theme=\"bootstrap\" ng-model=\"data.selected\" reset-search-input=\"true\">\n" +
     "    <ui-select-match><span ng-bind-html=\"$item[autoComplete.label]\"></span></ui-select-match>\n" +
     "    <ui-select-choices repeat=\"item[autoComplete.value] as item in items | filter: $select.search\">\n" +
     "      {{formatList(item)}}\n" +

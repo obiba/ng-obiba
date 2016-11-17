@@ -1,6 +1,6 @@
 <div class="form-group">
   <label class="control-label" ng-show="showTitle">{{title}}</label>
-  <ui-select multiple="multiple" theme="bootstrap" ng-model="data.selected" reset-search-input="true">
+  <ui-select ng-disabled="disabled" multiple="multiple" theme="bootstrap" ng-model="data.selected" reset-search-input="true">
     <ui-select-match><span ng-bind-html="$item[autoComplete.label]"></span></ui-select-match>
     <ui-select-choices repeat="item[autoComplete.value] as item in items | filter: $select.search">
       {{formatList(item)}}

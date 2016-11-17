@@ -204,6 +204,7 @@ angular.module('obiba.form')
         showTitle: '=',
         description: '=',
         autoComplete: '=',
+        disabled: '=',
         items: '=',
         model: '='
       },

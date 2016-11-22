@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-11-21
+ * Date: 2016-11-22
  */
 'use strict';
 
@@ -185,15 +185,17 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
         var parentElement = element.parent()[0];
         var ratio = parentElement.clientWidth / scope.config.getDimensions().width;
 
-        var projection = d3.geo.mercator()
-            .scale(scope.config.getScale() * ratio)
-            .translate([scope.config.getDimensions().width * ratio / 2, scope.config.getDimensions().height * ratio / 2]);
+        var projection = d3.geo.equirectangular()
+            .translate([scope.config.getDimensions().width * ratio / 2, scope.config.getDimensions().height * ratio / 2])
+            .scale(scope.config.getScale() * ratio);
         var path = d3.geo.path().projection(projection);
         var svg = d3.select(element[0]).append('svg')
             .attr('width', scope.config.getDimensions().width * ratio)
             .attr('height', scope.config.getDimensions().height * ratio);
 
-        svg.selectAll('path')
+        var g = svg.append('g');
+
+        g.selectAll('path')
             .data(ObibaCountriesGeoJson.features)
             .enter()
             .append('path').attr('d', path)

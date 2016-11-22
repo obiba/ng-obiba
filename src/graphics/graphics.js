@@ -53,7 +53,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
             tickFormat: function (d) { return d3.format(',.0f')(d); }
           },
           showLabels: false,
-          duration: 500,
+          duration: 0,
           labelThreshold: 0.01,
           groupSpacing: 0.5,
           height: 250,

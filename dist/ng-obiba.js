@@ -928,9 +928,7 @@ angular.module('obiba.form')
         multiple: '='
       },
       templateUrl: 'form/form-ui-select.tpl.html',
-      link: function ($scope, element) {
-
-        console.log('TEST', element);
+      link: function ($scope) {
 
         var defaultAutoComplete = {
           format: ':label (:value)',
@@ -946,17 +944,8 @@ angular.module('obiba.form')
           }
         });
 
-        console.log('DIRECTIVE SCOPE ', $scope);
-
-        if($scope.multiple) {
-          console.log('MULTIPLE');
-          console.log(element);
-          element.attr('multiple', 'multiple');
-        }
-
         $scope.$watchCollection('data.selected', function() {
           if ($scope.data.selected) {
-            console.log('SELECTED ', $scope.data.selected);
             $scope.model = $scope.data.selected;
           }
         });
@@ -1446,16 +1435,17 @@ angular.module("form/form-textarea-template.tpl.html", []).run(["$templateCache"
 angular.module("form/form-ui-select.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-ui-select.tpl.html",
     "<div ng-if=\"multiple\">\n" +
-    "<div class=\"form-group\">\n" +
-    "  <label class=\"control-label\" ng-show=\"showTitle\">{{title}}</label>\n" +
-    "  <ui-select ng-disabled=\"disabled\" multiple=\"multiple\" theme=\"bootstrap\" ng-model=\"data.selected\" reset-search-input=\"true\">\n" +
-    "    <ui-select-match><span ng-bind-html=\"$item[autoComplete.label]\"></span></ui-select-match>\n" +
-    "    <ui-select-choices repeat=\"item[autoComplete.value] as item in items | filter: $select.search\">\n" +
-    "      {{formatList(item)}}\n" +
-    "    </ui-select-choices>\n" +
-    "  </ui-select>\n" +
-    "  <span class=\"help-block\" sf-message=\"description\"></span>\n" +
-    "</div>\n" +
+    "  <div class=\"form-group\">\n" +
+    "    <label class=\"control-label\" ng-show=\"showTitle\">{{title}}</label>\n" +
+    "    <ui-select ng-disabled=\"disabled\" multiple=\"multiple\" theme=\"bootstrap\" ng-model=\"data.selected\"\n" +
+    "               reset-search-input=\"true\">\n" +
+    "      <ui-select-match><span ng-bind-html=\"$item[autoComplete.label]\"></span></ui-select-match>\n" +
+    "      <ui-select-choices repeat=\"item[autoComplete.value] as item in items | filter: $select.search\">\n" +
+    "        {{formatList(item)}}\n" +
+    "      </ui-select-choices>\n" +
+    "    </ui-select>\n" +
+    "    <span class=\"help-block\" sf-message=\"description\"></span>\n" +
+    "  </div>\n" +
     "</div>\n" +
     "<div ng-if=\"!multiple\">\n" +
     "  <div class=\"form-group\">\n" +

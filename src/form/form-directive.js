@@ -206,10 +206,12 @@ angular.module('obiba.form')
         autoComplete: '=',
         disabled: '=',
         items: '=',
-        model: '='
+        model: '=',
+        multiple: '='
       },
       templateUrl: 'form/form-ui-select.tpl.html',
       link: function ($scope) {
+
         var defaultAutoComplete = {
           format: ':label (:value)',
           label: 'label',

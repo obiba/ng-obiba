@@ -104,13 +104,13 @@ angular.module('obiba.alert', [
       };
     }
 
-    this.$get = function(AlertService, ServerErrorUtils) {
+    this.$get = ['AlertService', 'ServerErrorUtils', function(AlertService, ServerErrorUtils) {
       if (!defaults.growlId && !defaults.alertId && !defaults.msgKey) {
         throw new Error('AlertBuilderProvider - these alert defaults must be set: growlId, alertId, msgKey');
       }
 
       return new AlertBuilder(AlertService, ServerErrorUtils, angular.copy(defaults));
-    };
+    }];
 
   });
 

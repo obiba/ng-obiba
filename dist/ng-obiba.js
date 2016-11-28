@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-11-24
+ * Date: 2016-11-28
  */
 'use strict';
 
@@ -1083,13 +1083,13 @@ angular.module('obiba.alert', [
       };
     }
 
-    this.$get = function(AlertService, ServerErrorUtils) {
+    this.$get = ['AlertService', 'ServerErrorUtils', function(AlertService, ServerErrorUtils) {
       if (!defaults.growlId && !defaults.alertId && !defaults.msgKey) {
         throw new Error('AlertBuilderProvider - these alert defaults must be set: growlId, alertId, msgKey');
       }
 
       return new AlertBuilder(AlertService, ServerErrorUtils, angular.copy(defaults));
-    };
+    }];
 
   });
 

@@ -12,6 +12,11 @@ angular.module('obiba.alert')
         },
         templateUrl: 'alert/alert-template.tpl.html',
         link: function(scope) {
+
+          scope.getCssClass = function(alert) {
+            return 'alert-'+alert.type + (alert.growl ? 'alert-growl' : '');
+          };
+
           scope.alerts = [];
           if (!scope.id) {
             throw new Error('ObibaAlert directive must have a DOM id attribute.');

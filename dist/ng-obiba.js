@@ -1023,7 +1023,7 @@ angular.module('obiba.alert', [
       defaults.mode = 'alert';
     };
 
-    function AlertBuilder(AlertService, ServerErrorUtils, defaults) {
+    function AlertBuilder(AlertService, ServerErrorUtils, LocaleStringUtils, defaults) {
 
       this.newBuilder = function() {
 
@@ -1036,6 +1036,11 @@ angular.module('obiba.alert', [
 
         this.response = function(value) {
           options.msg = ServerErrorUtils.buildMessage(value);
+          return this;
+        };
+
+        this.trMsg = function(msgKey, msgKeyArgs) {
+          options.msg = LocaleStringUtils.translate(msgKey, msgKeyArgs);
           return this;
         };
 
@@ -1083,13 +1088,14 @@ angular.module('obiba.alert', [
       };
     }
 
-    this.$get = ['AlertService', 'ServerErrorUtils', function(AlertService, ServerErrorUtils) {
-      if (!defaults.growlId && !defaults.alertId && !defaults.msgKey) {
-        throw new Error('AlertBuilderProvider - these alert defaults must be set: growlId, alertId, msgKey');
-      }
+    this.$get = ['AlertService', 'ServerErrorUtils', 'LocaleStringUtils',
+      function(AlertService, ServerErrorUtils, LocaleStringUtils) {
+        if (!defaults.growlId && !defaults.alertId && !defaults.msgKey) {
+          throw new Error('AlertBuilderProvider - these alert defaults must be set: growlId, alertId, msgKey');
+        }
 
-      return new AlertBuilder(AlertService, ServerErrorUtils, angular.copy(defaults));
-    }];
+        return new AlertBuilder(AlertService, ServerErrorUtils, LocaleStringUtils, angular.copy(defaults));
+      }];
 
   });
 
@@ -1151,6 +1157,11 @@ angular.module('obiba.alert')
         },
         templateUrl: 'alert/alert-template.tpl.html',
         link: function(scope) {
+
+          scope.getCssClass = function(alert) {
+            return 'alert-'+alert.type + (alert.growl ? 'alert-growl' : '');
+          };
+
           scope.alerts = [];
           if (!scope.id) {
             throw new Error('ObibaAlert directive must have a DOM id attribute.');
@@ -1315,8 +1326,7 @@ angular.module('ngObiba', [
 angular.module("alert/alert-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("alert/alert-template.tpl.html",
     "<div uib-alert ng-repeat=\"alert in alerts\"\n" +
-    "           class=\"{{alert.growl ? 'alert-growl' : ''}}\"\n" +
-    "           type=\"{{alert.type}}\"\n" +
+    "           ng-class=\"getCssClass(alert)\"\n" +
     "           close=\"close($index)\">\n" +
     "  <span ng-bind-html=\"alert.message\"></span>\n" +
     "</div>");

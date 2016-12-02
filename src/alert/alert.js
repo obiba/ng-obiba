@@ -44,7 +44,7 @@ angular.module('obiba.alert', [
       defaults.mode = 'alert';
     };
 
-    function AlertBuilder(AlertService, ServerErrorUtils, defaults) {
+    function AlertBuilder(AlertService, ServerErrorUtils, LocaleStringUtils, defaults) {
 
       this.newBuilder = function() {
 
@@ -57,6 +57,11 @@ angular.module('obiba.alert', [
 
         this.response = function(value) {
           options.msg = ServerErrorUtils.buildMessage(value);
+          return this;
+        };
+
+        this.trMsg = function(msgKey, msgKeyArgs) {
+          options.msg = LocaleStringUtils.translate(msgKey, msgKeyArgs);
           return this;
         };
 
@@ -104,13 +109,14 @@ angular.module('obiba.alert', [
       };
     }
 
-    this.$get = ['AlertService', 'ServerErrorUtils', function(AlertService, ServerErrorUtils) {
-      if (!defaults.growlId && !defaults.alertId && !defaults.msgKey) {
-        throw new Error('AlertBuilderProvider - these alert defaults must be set: growlId, alertId, msgKey');
-      }
+    this.$get = ['AlertService', 'ServerErrorUtils', 'LocaleStringUtils',
+      function(AlertService, ServerErrorUtils, LocaleStringUtils) {
+        if (!defaults.growlId && !defaults.alertId && !defaults.msgKey) {
+          throw new Error('AlertBuilderProvider - these alert defaults must be set: growlId, alertId, msgKey');
+        }
 
-      return new AlertBuilder(AlertService, ServerErrorUtils, angular.copy(defaults));
-    }];
+        return new AlertBuilder(AlertService, ServerErrorUtils, LocaleStringUtils, angular.copy(defaults));
+      }];
 
   });
 

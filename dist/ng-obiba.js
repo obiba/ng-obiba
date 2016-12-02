@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-12-01
+ * Date: 2016-12-02
  */
 'use strict';
 
@@ -1314,12 +1314,12 @@ angular.module('ngObiba', [
 
 angular.module("alert/alert-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("alert/alert-template.tpl.html",
-    "<uib-alert ng-repeat=\"alert in alerts\"\n" +
+    "<div uib-alert ng-repeat=\"alert in alerts\"\n" +
     "           class=\"{{alert.growl ? 'alert-growl' : ''}}\"\n" +
     "           type=\"{{alert.type}}\"\n" +
     "           close=\"close($index)\">\n" +
     "  <span ng-bind-html=\"alert.message\"></span>\n" +
-    "</uib-alert>");
+    "</div>");
 }]);
 
 angular.module("comments/comment-editor-template.tpl.html", []).run(["$templateCache", function($templateCache) {

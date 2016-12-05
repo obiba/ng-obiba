@@ -14,7 +14,7 @@ angular.module('obiba.alert')
         link: function(scope) {
 
           scope.getCssClass = function(alert) {
-            return 'alert-'+alert.type + (alert.growl ? 'alert-growl' : '');
+            return 'alert-'+alert.type + (alert.growl ? ' alert-growl' : '');
           };
 
           scope.alerts = [];

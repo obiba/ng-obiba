@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-12-02
+ * Date: 2016-12-05
  */
 'use strict';
 
@@ -1159,7 +1159,7 @@ angular.module('obiba.alert')
         link: function(scope) {
 
           scope.getCssClass = function(alert) {
-            return 'alert-'+alert.type + (alert.growl ? 'alert-growl' : '');
+            return 'alert-'+alert.type + (alert.growl ? ' alert-growl' : '');
           };
 
           scope.alerts = [];

@@ -60,6 +60,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
             tickFormat: function (d) { return d3.format(',.0f')(d); }
           },
           showLabels: false,
+          showLegend: true,
           duration: 0,
           labelThreshold: 0.01,
           groupSpacing: 0.5,
@@ -97,11 +98,11 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
       };
 
       switch (aggregation) {
-        case 'methods-designs':
-        case 'populations-dataCollectionEvents-bioSamples':
+        case 'model-methods-design':
+        case 'populations-dataCollectionEvents-model-bioSamples':
           options.chart.type = 'multiBarHorizontalChart';
           break;
-        case 'numberOfParticipants-participant-range':
+        case 'model-numberOfParticipants-participant-range':
           options.chart.type = 'pieChart';
           break;
         default:
@@ -167,9 +168,10 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
           }
         }
 
+        var configColor = lightestColor(scope.config.color);
         var color = d3.scale.threshold()
             .domain([0, max])
-            .range(d3.range(0, max, 1).map(function (i) { return d3.rgb(scope.config.color).darker(i); }));
+            .range(d3.range(0, max, 1).map(function (i) { return d3.rgb(configColor).darker(i); }));
 
         // title
         var title = scope.config.title;
@@ -216,6 +218,40 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
             .on('mouseout', function () {
               tooltip.classed('hidden', true);
             });
+      }
+
+      function lightestColor(colorArray) {
+        // according to ITU-R Recommendation BT.709, HDTV forms luma (D'Y) using D'R, D'G and D'B coefficients 0.2126, 0.7152, and 0.0722.
+        // http://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf
+
+        if (!Array.isArray(colorArray)) {
+          return colorArray;
+        }
+
+        colorArray.sort(colorComparator);
+
+        return colorArray.reduce(function (acc, val) {
+          if (!acc) {
+            return val;
+          }
+
+          var rgbVal = d3.rgb(val),
+              rbgAcc = d3.rgb(acc);
+
+          return luma(rgbVal) <= luma(rbgAcc) ? val : acc;
+        });
+      }
+
+      function colorComparator(colorA, colorB) {
+        if (colorA === colorB) {
+          return 0;
+        }
+
+        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorA)) ? 1 : -1;
+      }
+
+      function luma(rgbColor) {
+        return rgbColor.r * 0.2126 + rgbColor.g * 0.7152 + rgbColor.b * 0.0722;
       }
 
       return {

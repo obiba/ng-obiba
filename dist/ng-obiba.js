@@ -327,7 +327,7 @@ angular.module('obiba.utils', [])
 
     this.truncate = function (text, size) {
       var max = size || 30;
-      return text.length > max ? text.substring(0, max) + '...' : text;
+      return text && text.length > max ? text.substring(0, max) + '...' : text;
     };
   })
 

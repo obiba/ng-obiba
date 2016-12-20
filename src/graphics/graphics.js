@@ -49,6 +49,14 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
         chart: {
           x: function (d) { return d.title; },
           y: function (d) { return d.value; },
+          xAxis: {
+            tickFormat: function (d) {
+              if (d.length && d.length > 8) {
+                d3.select(this).style('font-size', '.5em');
+              }
+              return d;
+            }
+          },
           yAxis: {
             tickFormat: function (d) { return d3.format(',.0f')(d); }
           },

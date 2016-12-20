@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-12-19
+ * Date: 2016-12-20
  */
 'use strict';
 
@@ -54,13 +54,11 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
 
       var options = {
         chart: {
+          margin: {left: 100},
           x: function (d) { return d.title; },
           y: function (d) { return d.value; },
           xAxis: {
             tickFormat: function (d) {
-              if (d.length && d.length > 8) {
-                d3.select(this).style('font-size', '.5em');
-              }
               return d;
             }
           },

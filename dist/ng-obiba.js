@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2016-12-20
+ * Date: 2017-01-05
  */
 'use strict';
 
@@ -1262,12 +1262,6 @@ angular.module('obiba.comments')
     });
   }])
 
-  .filter('fromNow', ['moment', function(moment) {
-    return function(dateString) {
-      return moment(dateString).fromNow();
-    };
-  }])
-
   .directive('obibaCommentEditor', [function () {
     return {
       restrict: 'E',
@@ -1321,35 +1315,40 @@ angular.module('obiba.comments')
     };
   }])
 
-  .controller('ObibaCommentsController', ['$scope',
-    function ($scope) {
+  .controller('ObibaCommentsController', ['$scope', 'moment',
+    function ($scope, moment) {
 
-      var clearSelected = function(){
+      var clearSelected = function () {
         $scope.selected = -1;
       };
-      var canDoAction = function(comment, action) {
-        return angular.isUndefined(action) || (!angular.isUndefined(comment.actions) && comment.actions.indexOf (action) !== -1);
+      var canDoAction = function (comment, action) {
+        return angular.isUndefined(action) || (!angular.isUndefined(comment.actions) && comment.actions.indexOf(action) !== -1);
       };
 
-      $scope.canEdit = function(index) {
+      $scope.canEdit = function (index) {
         return canDoAction($scope.comments[index], $scope.editAction);
       };
-      $scope.canDelete = function(index) {
+      $scope.canDelete = function (index) {
         return canDoAction($scope.comments[index], $scope.deleteAction);
       };
-      $scope.submit = function(comment) {
+      $scope.submit = function (comment) {
         $scope.onUpdate()(comment);
         clearSelected();
       };
-      $scope.edit = function(index) {
+      $scope.edit = function (index) {
         $scope.selected = index;
       };
-      $scope.cancel = function() {
+      $scope.cancel = function () {
         clearSelected();
       };
-      $scope.remove = function(index) {
+      $scope.remove = function (index) {
         $scope.onDelete()($scope.comments[index]);
       };
+
+      $scope.fromNow = function(dateString) {
+        return moment(dateString).fromNow();
+      };
+
     }]);
 
 
@@ -1411,8 +1410,8 @@ angular.module("comments/comments-template.tpl.html", []).run(["$templateCache",
     "        <div class=\"panel-heading\">\n" +
     "          <div>\n" +
     "            <span class=\"obiba-comment-icon\"><i class=\"glyphicon glyphicon-comment\"></i></span>\n" +
-    "            <span ng-if=\"!comment.modifiedBy\">{{'comment.created-by' | translate}} {{nameResolver()(comment.createdByProfile) || comment.createdBy}} {{comment.timestamps.created | fromNow }}</span>\n" +
-    "            <span ng-if=\"comment.modifiedBy\"> {{'comment.modified-by' | translate}} {{nameResolver()(comment.modifiedByProfile) || comment.modifiedBy}} {{comment.timestamps.lastUpdate | fromNow }}</span>\n" +
+    "            <span ng-if=\"!comment.modifiedBy\">{{'comment.created-by' | translate}} {{nameResolver()(comment.createdByProfile) || comment.createdBy}} {{fromNow(comment.timestamps.created)}}</span>\n" +
+    "            <span ng-if=\"comment.modifiedBy\"> {{'comment.modified-by' | translate}} {{nameResolver()(comment.modifiedByProfile) || comment.modifiedBy}} {{fromNow(comment.timestamps.lastUpdate)}}</span>\n" +
     "            <span class=\"pull-right\">\n" +
     "              <a ng-if=\"canEdit($index)\" ng-click=\"edit($index)\"\n" +
     "                 class=\"btn btn-primary btn-xs\">\n" +

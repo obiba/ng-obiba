@@ -5,8 +5,8 @@
         <div class="panel-heading">
           <div>
             <span class="obiba-comment-icon"><i class="glyphicon glyphicon-comment"></i></span>
-            <span ng-if="!comment.modifiedBy">{{'comment.created-by' | translate}} {{nameResolver()(comment.createdByProfile) || comment.createdBy}} {{comment.timestamps.created | fromNow }}</span>
-            <span ng-if="comment.modifiedBy"> {{'comment.modified-by' | translate}} {{nameResolver()(comment.modifiedByProfile) || comment.modifiedBy}} {{comment.timestamps.lastUpdate | fromNow }}</span>
+            <span ng-if="!comment.modifiedBy">{{'comment.created-by' | translate}} {{nameResolver()(comment.createdByProfile) || comment.createdBy}} {{fromNow(comment.timestamps.created)}}</span>
+            <span ng-if="comment.modifiedBy"> {{'comment.modified-by' | translate}} {{nameResolver()(comment.modifiedByProfile) || comment.modifiedBy}} {{fromNow(comment.timestamps.lastUpdate)}}</span>
             <span class="pull-right">
               <a ng-if="canEdit($index)" ng-click="edit($index)"
                  class="btn btn-primary btn-xs">

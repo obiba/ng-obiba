@@ -1,9 +1,9 @@
 /*!
- * ng-obiba - v1.4.3
+ * ng-obiba - v1.4.4
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-01-05
+ * Date: 2017-01-06
  */
 'use strict';
 

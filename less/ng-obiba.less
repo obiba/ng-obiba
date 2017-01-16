@@ -103,3 +103,17 @@ div#obiba-comments {
     color: #000 !important;
   }
 }
+
+@media print {
+  // don't break panels
+  div.panel {
+    page-break-inside: avoid;
+  }
+  tbody::after {
+    content: '';
+    display: block;
+    page-break-before: avoid;
+    page-break-inside: avoid;
+    page-break-after: always;
+  }
+}

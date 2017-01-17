@@ -109,6 +109,11 @@ div#obiba-comments {
   div.panel {
     page-break-inside: avoid;
   }
+  // fix for chrome
+  [class*="col-xs"], [class*="col-sm"], [class*="col-md"], [class*="col-lg"] {
+    float: none !important;
+    width: 100% !important;
+  }
   tbody::after {
     content: '';
     display: block;

@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-01-17
+ * Date: 2017-03-21
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -125,7 +125,15 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
           options.chart.type = 'multiBarChart';
           break;
       }
-
+if(options.chart.type === 'pieChart'){
+  options.chart.showLabels = true;
+  options.chart.labelThreshold = 0.1;
+  options.chart.labelSunbeamLayout = false;
+  options.chart.labelType =  function(d){
+    var percent = (d.endAngle - d.startAngle) / (2 * Math.PI);
+    return d3.format('.2%')(percent);
+  };
+}
       this.data = [];
       this.options = options;
     }

@@ -1,9 +1,9 @@
 /*!
- * ng-obiba - v1.4.7
+ * ng-obiba - v1.4.3
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-03-24
+ * Date: 2017-05-05
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -649,7 +649,7 @@ angular.module('obiba.notification')
   .controller('NotificationController', ['$rootScope', '$scope', '$uibModal', 'NOTIFICATION_EVENTS',
     function ($rootScope, $scope, $uibModal, NOTIFICATION_EVENTS) {
 
-      $scope.$on(NOTIFICATION_EVENTS.showNotificationDialog, function (event, notification) {
+      $scope.$on(NOTIFICATION_EVENTS.showNotificationDialog, function (event, notification, afterDismissal) {
         $uibModal.open({
           templateUrl: 'notification/notification-modal.tpl.html',
           controller: 'NotificationModalController',
@@ -657,6 +657,12 @@ angular.module('obiba.notification')
             notification: function () {
               return notification;
             }
+          }
+        }).result.then(function () {
+          // do nothing
+        }, function () {
+          if (afterDismissal) {
+            afterDismissal();
           }
         });
       });

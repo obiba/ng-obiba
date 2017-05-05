@@ -22,7 +22,7 @@ angular.module('obiba.notification')
   .controller('NotificationController', ['$rootScope', '$scope', '$uibModal', 'NOTIFICATION_EVENTS',
     function ($rootScope, $scope, $uibModal, NOTIFICATION_EVENTS) {
 
-      $scope.$on(NOTIFICATION_EVENTS.showNotificationDialog, function (event, notification) {
+      $scope.$on(NOTIFICATION_EVENTS.showNotificationDialog, function (event, notification, afterDismissal) {
         $uibModal.open({
           templateUrl: 'notification/notification-modal.tpl.html',
           controller: 'NotificationModalController',
@@ -30,6 +30,12 @@ angular.module('obiba.notification')
             notification: function () {
               return notification;
             }
+          }
+        }).result.then(function () {
+          // do nothing
+        }, function () {
+          if (afterDismissal) {
+            afterDismissal();
           }
         });
       });

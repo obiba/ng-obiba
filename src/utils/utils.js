@@ -54,6 +54,7 @@ angular.module('obiba.utils', [])
     }])
 
   .service('StringUtils', function () {
+    var self = this;
     this.capitaliseFirstLetter = function (string) {
       return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
     };
@@ -70,7 +71,23 @@ angular.module('obiba.utils', [])
       var max = size || 30;
       return text && text.length > max ? text.substring(0, max) + '...' : text;
     };
+
+    this.ellipsis = function (text, size) {
+      return size ? self.truncate(text, size) : text;
+    };
   })
+
+  .filter('ellipsis', ['StringUtils', function (StringUtils) {
+    return function (text, size) {
+      return StringUtils.ellipsis(text, size);
+    };
+  }])
+
+  .filter('markdown', ['marked', function (marked) {
+    return function (text) {
+      return marked(text);
+    };
+  }])
 
   .service('LocaleStringUtils', ['$filter', function ($filter) {
     this.translate = function (key, args) {

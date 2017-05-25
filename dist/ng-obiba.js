@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-05-05
+ * Date: 2017-05-25
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -341,6 +341,7 @@ angular.module('obiba.utils', [])
     }])
 
   .service('StringUtils', function () {
+    var self = this;
     this.capitaliseFirstLetter = function (string) {
       return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
     };
@@ -357,7 +358,23 @@ angular.module('obiba.utils', [])
       var max = size || 30;
       return text && text.length > max ? text.substring(0, max) + '...' : text;
     };
+
+    this.ellipsis = function (text, size) {
+      return size ? self.truncate(text, size) : text;
+    };
   })
+
+  .filter('ellipsis', ['StringUtils', function (StringUtils) {
+    return function (text, size) {
+      return StringUtils.ellipsis(text, size);
+    };
+  }])
+
+  .filter('markdown', ['marked', function (marked) {
+    return function (text) {
+      return marked(text);
+    };
+  }])
 
   .service('LocaleStringUtils', ['$filter', function ($filter) {
     this.translate = function (key, args) {
@@ -1380,7 +1397,6 @@ angular.module('obiba.comments', [
   'obiba.notification',
   'obiba.form',
   'templates-main',
-  'hc.marked',
   'pascalprecht.translate',
   'angularMoment'
 ]);
@@ -1512,6 +1528,7 @@ angular.module('ngObiba', [
   'obiba.form',
   'obiba.notification',
   'obiba.rest',
+  'hc.marked',
   'obiba.utils',
   'obiba.alert',
   'obiba.comments',

@@ -15,7 +15,6 @@ angular.module('obiba.comments', [
   'obiba.notification',
   'obiba.form',
   'templates-main',
-  'hc.marked',
   'pascalprecht.translate',
   'angularMoment'
 ]);

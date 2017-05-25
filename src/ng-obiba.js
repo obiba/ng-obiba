@@ -14,6 +14,7 @@ angular.module('ngObiba', [
   'obiba.form',
   'obiba.notification',
   'obiba.rest',
+  'hc.marked',
   'obiba.utils',
   'obiba.alert',
   'obiba.comments',

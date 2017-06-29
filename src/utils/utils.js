@@ -84,8 +84,8 @@ angular.module('obiba.utils', [])
   }])
 
   .filter('markdown', ['marked', function (marked) {
-    return function (text) {
-      return marked(text);
+    return function (text, markdownIt) {
+      return markdownIt ? marked(text) : text;
     };
   }])
 

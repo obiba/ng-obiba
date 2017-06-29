@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-05-25
+ * Date: 2017-06-28
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -371,8 +371,8 @@ angular.module('obiba.utils', [])
   }])
 
   .filter('markdown', ['marked', function (marked) {
-    return function (text) {
-      return marked(text);
+    return function (text, markdownIt) {
+      return markdownIt ? marked(text) : text;
     };
   }])
 

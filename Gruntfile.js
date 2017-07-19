@@ -9,6 +9,7 @@ module.exports = function (grunt) {
       src: {
         js: [
           // order is important!
+          'src/ng-obiba.js',
           'src/graphics/graphics.js',
           'src/utils/utils.js',
           'src/notification/notification.js',
@@ -21,8 +22,7 @@ module.exports = function (grunt) {
           'src/alert/alert-service.js',
           'src/alert/alert-directive.js',
           'src/comments/comments.js',
-          'src/comments/comments-directive.js',
-          'src/ng-obiba.js'
+          'src/comments/comments-directive.js'
         ]
       }
     },

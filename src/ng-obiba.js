@@ -10,7 +10,8 @@
 
 'use strict';
 
-angular.module('ngObiba', [
+/* exported obiba */
+var obiba = angular.module('ngObiba', [
   'obiba.form',
   'obiba.notification',
   'obiba.rest',

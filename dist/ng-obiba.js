@@ -1,9 +1,9 @@
 /*!
- * ng-obiba - v1.4.3
+ * ng-obiba - v1.5.0
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-12-08
+ * Date: 2017-08-18
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -44,7 +44,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
   .factory('D3GeoConfig', [function () {
     function D3GeoConfig () {
       this.data = [];
-      this.color = ['#2077b2']; // the lightest color
+      this.color = '#2077b2'; // the lightest color
       this._dimensions = {width: 960, height: 500}; // default geoMercator translate dimensions
       this._scale = 150; // default geoMercator scale
       this.title = '';
@@ -201,39 +201,11 @@ if(options.chart.type === 'pieChart'){
   }])
   .directive('obibaGeo', ['ObibaCountriesGeoJson',
     function (ObibaCountriesGeoJson) {
-
-      function ColorSelector(values, palette) {
-        var sortedUniqueValues =
-          values.filter(function(item, pos) {
-            return values.indexOf(item) === pos;
-          })
-          .sort(function(a, b){
-            return a- b;
-          });
-
-        var configColor = lightestColor(palette);
-
-        /**
-         * The algorithm is still not perfect and may have a threshold where high values would look black.
-         *
-         * @param value
-         * @returns RGB color
-         */
-        this.color = function(value) {
-          var index = sortedUniqueValues.indexOf(value);
-          return index === 0 ? d3.rgb(configColor) : d3.rgb(configColor).darker(index*0.005*value);
-        };
-      }
-
-      function link(scope, element) {
+      function link(scope, element) {        
         // data
-        var values = [];
         var data = {};
         // assuming config.data: [{key: X1, title: Y1, default: Z1, count: A1}, {key: Xn, title: Yn, default: Zn, count: An}, ...]
-        scope.config.data.forEach(function (d) {
-          data[d.key] = d.value;
-          values.push(d.value);
-        });
+        scope.config.data.forEach(function (d) { data[d.key] = d.value; });
 
         // colors
         var max = 0;
@@ -243,7 +215,10 @@ if(options.chart.type === 'pieChart'){
           }
         }
 
-        var colorSelector = new ColorSelector(values,scope.config.color);
+        var configColor = lightestColor(scope.config.color);
+        var color = d3.scale.threshold()
+            .domain([0, max])
+            .range(d3.range(0, max, 1).map(function (i) { return d3.rgb(configColor).darker(i); }));
 
         // title
         var title = scope.config.title;
@@ -273,8 +248,7 @@ if(options.chart.type === 'pieChart'){
             .data(ObibaCountriesGeoJson.features)
             .enter()
             .append('path').attr('d', path)
-            .style('fill', function (d) {return data[d.id] ? colorSelector.color(data[d.id]) : d3.rgb('#ccc');})
-            .style('stroke', '#fff')
+            .style('fill', function (d) { return data[d.id] ? color(data[d.id]) : d3.rgb('#ccc'); }).style('stroke', '#fff')
             .on('mousemove', function (d) {
               var mouse = d3.mouse(svg.node()).map(function(d) {
                 return parseInt(d);
@@ -311,7 +285,7 @@ if(options.chart.type === 'pieChart'){
           var rgbVal = d3.rgb(val),
               rbgAcc = d3.rgb(acc);
 
-          return luma(rgbVal) > luma(rbgAcc) ? val : acc;
+          return luma(rgbVal) <= luma(rbgAcc) ? val : acc;
         });
       }
 
@@ -320,7 +294,7 @@ if(options.chart.type === 'pieChart'){
           return 0;
         }
 
-        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorB)) ? 1 : -1;
+        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorA)) ? 1 : -1;
       }
 
       function luma(rgbColor) {
@@ -349,69 +323,6 @@ if(options.chart.type === 'pieChart'){
 /*global obiba */
 
 obiba.utils = angular.module('obiba.utils', []);
-
-obiba.utils.NgObibaStringUtils = function() {
-
-  function capitaliseFirstLetter(string) {
-    return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
-  }
-
-  function replaceAll(str, mapObj) {
-    var re = new RegExp(Object.keys(mapObj).join('|'),'gi');
-
-    return str.replace(re, function(matched){
-      return mapObj[matched.toLowerCase()];
-    });
-  }
-
-  function truncate(text, size) {
-    var max = size || 30;
-    return text && text.length > max ? text.substring(0, max) + '...' : text;
-  }
-
-  function ellipsis(text, size) {
-    return size ? truncate(text, size) : text;
-  }
-
-  function quoteQuery(text) {
-    text = text.trim();
-
-    if (text.match(/\s+/)) {
-      return '"'+text.replace(/^"|"$/g, '').replace(/"/, '\"')+'"';
-    }
-
-    return text;
-  }
-
-  function camelize(text) {
-    var result = text.replace(/[\-_\s]+(.)?/g, function(match, chr) {
-      return chr ? chr.toUpperCase() : '';
-    });
-
-    return result.substr(0, 1).toLowerCase() + result.substr(1);
-  }
-
-  function cleanDoubleQuotesLeftUnclosed(inputString) {
-    var outputString = inputString.trim();
-    var regexp = new RegExp(/\"/, 'g');    
-    var instancesOfDoubleQuoteCharacters = (outputString.match(regexp) || []).length;
-
-    if (instancesOfDoubleQuoteCharacters % 2 !== 0) {
-      // double quotes are left unclosed
-      return outputString.replace(regexp, '');
-    }
-
-    return outputString;
-  }
-
-  this.cleanDoubleQuotesLeftUnclosed = cleanDoubleQuotesLeftUnclosed;
-  this.capitaliseFirstLetter = capitaliseFirstLetter;
-  this.replaceAll = replaceAll;
-  this.truncate = truncate;
-  this.ellipsis = ellipsis;
-  this.quoteQuery = quoteQuery;
-  this.camelize = camelize;
-};
 
 obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
     function($log, ObibaCountriesIsoCodes) {
@@ -449,13 +360,35 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
         if (filtered && filtered.length > 0) {
           return filtered[0].code;
         }
-
+        
         $log.error('ng-obiba: Invalid name ', name);
         return name;
       };
     }])
 
-  .service('StringUtils', obiba.utils.NgObibaStringUtils)
+  .service('StringUtils', function () {
+    var self = this;
+    this.capitaliseFirstLetter = function (string) {
+      return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
+    };
+
+    this.replaceAll = function(str, mapObj) {
+      var re = new RegExp(Object.keys(mapObj).join('|'),'gi');
+
+      return str.replace(re, function(matched){
+        return mapObj[matched.toLowerCase()];
+      });
+    };
+
+    this.truncate = function (text, size) {
+      var max = size || 30;
+      return text && text.length > max ? text.substring(0, max) + '...' : text;
+    };
+
+    this.ellipsis = function (text, size) {
+      return size ? self.truncate(text, size) : text;
+    };
+  })
 
   .filter('ellipsis', ['StringUtils', function (StringUtils) {
     return function (text, size) {
@@ -747,6 +680,7 @@ obiba.utils.EventListenerRegistry = function() {
   this.unregister = unregister;
   this.unregisterAll = unregisterAll;
 };
+
 ;/*
  * Copyright (c) 2017 OBiBa. All rights reserved.
  *
@@ -1634,52 +1568,7 @@ angular.module('obiba.comments')
     }]);
 
 
-;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
- *
- * This program and the accompanying materials
- * are made available under the terms of the GNU Public License v3.0.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-'use strict';
-
-(function () {
-
-  /**
-   * Directive primarily aimed to download a file via a POST but the submit method can be configured.
-   */
-  angular.module('ngObiba')
-    .directive('obibaFileDownload', function () {
-      return {
-        restrict: 'A',
-        replace: true,
-        scope: {
-          url: '<',
-          method: '@',
-          encoding: '<'
-        },
-        link: function (scope, element) {
-
-          function onClick(/*event*/) {
-            var form = document.createElement('form');
-            form.className = 'hidden';
-            form.method = scope.method || 'POST';
-            form.action = scope.url;
-            form.encType = scope.encoding || 'text/csv';
-            document.body.appendChild(form);
-            form.submit();
-            form.remove();
-          }
-
-          element.on('click', onClick);
-        }
-      };
-    });
-
-})();;angular.module('templates-main', ['alert/alert-template.tpl.html', 'comments/comment-editor-template.tpl.html', 'comments/comments-template.tpl.html', 'form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'form/form-localized-input-template.tpl.html', 'form/form-radio-group-template.tpl.html', 'form/form-radio-template.tpl.html', 'form/form-textarea-template.tpl.html', 'form/form-ui-select.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
+;angular.module('templates-main', ['alert/alert-template.tpl.html', 'comments/comment-editor-template.tpl.html', 'comments/comments-template.tpl.html', 'form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'form/form-localized-input-template.tpl.html', 'form/form-radio-group-template.tpl.html', 'form/form-radio-template.tpl.html', 'form/form-textarea-template.tpl.html', 'form/form-ui-select.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
 
 angular.module("alert/alert-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("alert/alert-template.tpl.html",

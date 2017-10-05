@@ -78,6 +78,16 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
     this.ellipsis = function (text, size) {
       return size ? self.truncate(text, size) : text;
     };
+
+    this.quoteQuery = function (text) {
+      text = text.trim();
+
+      if (text.match(/\s+/)) {
+        return '"'+text.replace(/^"|"$/g, '').replace(/"/, '\"')+'"';
+      }
+
+      return text;
+    };
   })
 
   .filter('ellipsis', ['StringUtils', function (StringUtils) {

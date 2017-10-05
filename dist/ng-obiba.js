@@ -1,9 +1,9 @@
 /*!
- * ng-obiba - v1.5.0
+ * ng-obiba - v1.4.3
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-08-18
+ * Date: 2017-10-05
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -294,7 +294,7 @@ if(options.chart.type === 'pieChart'){
           return 0;
         }
 
-        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorA)) ? 1 : -1;
+        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorB)) ? 1 : -1;
       }
 
       function luma(rgbColor) {
@@ -387,6 +387,16 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
 
     this.ellipsis = function (text, size) {
       return size ? self.truncate(text, size) : text;
+    };
+
+    this.quoteQuery = function (text) {
+      text = text.trim();
+
+      if (text.match(/\s+/)) {
+        return '"'+text.replace(/^"|"$/g, '').replace(/"/, '\"')+'"';
+      }
+
+      return text;
     };
   })
 

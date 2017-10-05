@@ -264,7 +264,7 @@ if(options.chart.type === 'pieChart'){
           return 0;
         }
 
-        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorA)) ? 1 : -1;
+        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorB)) ? 1 : -1;
       }
 
       function luma(rgbColor) {

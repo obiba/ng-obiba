@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-10-05
+ * Date: 2017-11-29
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -44,7 +44,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
   .factory('D3GeoConfig', [function () {
     function D3GeoConfig () {
       this.data = [];
-      this.color = '#2077b2'; // the lightest color
+      this.color = ['#2077b2']; // the lightest color
       this._dimensions = {width: 960, height: 500}; // default geoMercator translate dimensions
       this._scale = 150; // default geoMercator scale
       this.title = '';
@@ -201,11 +201,39 @@ if(options.chart.type === 'pieChart'){
   }])
   .directive('obibaGeo', ['ObibaCountriesGeoJson',
     function (ObibaCountriesGeoJson) {
-      function link(scope, element) {        
+
+      function ColorSelector(values, palette) {
+        var sortedUniqueValues =
+          values.filter(function(item, pos) {
+            return values.indexOf(item) === pos;
+          })
+          .sort(function(a, b){
+            return a- b;
+          });
+
+        var configColor = lightestColor(palette);
+
+        /**
+         * The algorithm is still not perfect and may have a threshold where high values would look black.
+         *
+         * @param value
+         * @returns RGB color
+         */
+        this.color = function(value) {
+          var index = sortedUniqueValues.indexOf(value);
+          return index === 0 ? d3.rgb(configColor) : d3.rgb(configColor).darker(index*0.005*value);
+        };
+      }
+
+      function link(scope, element) {
         // data
+        var values = [];
         var data = {};
         // assuming config.data: [{key: X1, title: Y1, default: Z1, count: A1}, {key: Xn, title: Yn, default: Zn, count: An}, ...]
-        scope.config.data.forEach(function (d) { data[d.key] = d.value; });
+        scope.config.data.forEach(function (d) {
+          data[d.key] = d.value;
+          values.push(d.value);
+        });
 
         // colors
         var max = 0;
@@ -215,10 +243,7 @@ if(options.chart.type === 'pieChart'){
           }
         }
 
-        var configColor = lightestColor(scope.config.color);
-        var color = d3.scale.threshold()
-            .domain([0, max])
-            .range(d3.range(0, max, 1).map(function (i) { return d3.rgb(configColor).darker(i); }));
+        var colorSelector = new ColorSelector(values,scope.config.color);
 
         // title
         var title = scope.config.title;
@@ -248,7 +273,8 @@ if(options.chart.type === 'pieChart'){
             .data(ObibaCountriesGeoJson.features)
             .enter()
             .append('path').attr('d', path)
-            .style('fill', function (d) { return data[d.id] ? color(data[d.id]) : d3.rgb('#ccc'); }).style('stroke', '#fff')
+            .style('fill', function (d) {return data[d.id] ? colorSelector.color(data[d.id]) : d3.rgb('#ccc');})
+            .style('stroke', '#fff')
             .on('mousemove', function (d) {
               var mouse = d3.mouse(svg.node()).map(function(d) {
                 return parseInt(d);
@@ -285,7 +311,7 @@ if(options.chart.type === 'pieChart'){
           var rgbVal = d3.rgb(val),
               rbgAcc = d3.rgb(acc);
 
-          return luma(rgbVal) <= luma(rbgAcc) ? val : acc;
+          return luma(rgbVal) > luma(rbgAcc) ? val : acc;
         });
       }
 
@@ -360,7 +386,7 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
         if (filtered && filtered.length > 0) {
           return filtered[0].code;
         }
-        
+
         $log.error('ng-obiba: Invalid name ', name);
         return name;
       };
@@ -398,6 +424,15 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
 
       return text;
     };
+
+    this.camelize = function (text) {
+      var result = text.replace(/[\-_\s]+(.)?/g, function(match, chr) {
+        return chr ? chr.toUpperCase() : '';
+      });
+
+      return result.substr(0, 1).toLowerCase() + result.substr(1);
+    };
+
   })
 
   .filter('ellipsis', ['StringUtils', function (StringUtils) {

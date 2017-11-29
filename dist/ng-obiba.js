@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-11-08
+ * Date: 2017-11-29
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -386,7 +386,7 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
         if (filtered && filtered.length > 0) {
           return filtered[0].code;
         }
-        
+
         $log.error('ng-obiba: Invalid name ', name);
         return name;
       };
@@ -424,6 +424,15 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
 
       return text;
     };
+
+    this.camelize = function (text) {
+      var result = text.replace(/[\-_\s]+(.)?/g, function(match, chr) {
+        return chr ? chr.toUpperCase() : '';
+      });
+
+      return result.substr(0, 1).toLowerCase() + result.substr(1);
+    };
+
   })
 
   .filter('ellipsis', ['StringUtils', function (StringUtils) {

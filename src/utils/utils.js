@@ -55,6 +55,20 @@ obiba.utils.NgObibaStringUtils = function() {
     return result.substr(0, 1).toLowerCase() + result.substr(1);
   }
 
+  function cleanDoubleQuotesLeftUnclosed(inputString) {
+    var outputString = inputString.trim();
+    var regexp = new RegExp(/\"/, 'g');    
+    var instancesOfDoubleQuoteCharacters = (outputString.match(regexp) || []).length;
+
+    if (instancesOfDoubleQuoteCharacters % 2 !== 0) {
+      // double quotes are left unclosed
+      return outputString.replace(regexp, '');
+    }
+
+    return outputString;
+  }
+
+  this.cleanDoubleQuotesLeftUnclosed = cleanDoubleQuotesLeftUnclosed;
   this.capitaliseFirstLetter = capitaliseFirstLetter;
   this.replaceAll = replaceAll;
   this.truncate = truncate;
@@ -397,4 +411,3 @@ obiba.utils.EventListenerRegistry = function() {
   this.unregister = unregister;
   this.unregisterAll = unregisterAll;
 };
-

@@ -22,7 +22,8 @@ module.exports = function (grunt) {
           'src/alert/alert-service.js',
           'src/alert/alert-directive.js',
           'src/comments/comments.js',
-          'src/comments/comments-directive.js'
+          'src/comments/comments-directive.js',
+          'src/directives/**/*.js'
         ]
       }
     },

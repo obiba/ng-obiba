@@ -14,6 +14,69 @@
 
 obiba.utils = angular.module('obiba.utils', []);
 
+obiba.utils.NgObibaStringUtils = function() {
+
+  function capitaliseFirstLetter(string) {
+    return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
+  }
+
+  function replaceAll(str, mapObj) {
+    var re = new RegExp(Object.keys(mapObj).join('|'),'gi');
+
+    return str.replace(re, function(matched){
+      return mapObj[matched.toLowerCase()];
+    });
+  }
+
+  function truncate(text, size) {
+    var max = size || 30;
+    return text && text.length > max ? text.substring(0, max) + '...' : text;
+  }
+
+  function ellipsis(text, size) {
+    return size ? truncate(text, size) : text;
+  }
+
+  function quoteQuery(text) {
+    text = text.trim();
+
+    if (text.match(/\s+/)) {
+      return '"'+text.replace(/^"|"$/g, '').replace(/"/, '\"')+'"';
+    }
+
+    return text;
+  }
+
+  function camelize(text) {
+    var result = text.replace(/[\-_\s]+(.)?/g, function(match, chr) {
+      return chr ? chr.toUpperCase() : '';
+    });
+
+    return result.substr(0, 1).toLowerCase() + result.substr(1);
+  }
+
+  function cleanDoubleQuotesLeftUnclosed(inputString) {
+    var outputString = inputString.trim();
+    var regexp = new RegExp(/\"/, 'g');    
+    var instancesOfDoubleQuoteCharacters = (outputString.match(regexp) || []).length;
+
+    if (instancesOfDoubleQuoteCharacters % 2 !== 0) {
+      // double quotes are left unclosed
+      return outputString.replace(regexp, '');
+    }
+
+    return outputString;
+  }
+
+  this.cleanDoubleQuotesLeftUnclosed = cleanDoubleQuotesLeftUnclosed;
+  this.capitaliseFirstLetter = capitaliseFirstLetter;
+  this.replaceAll = replaceAll;
+  this.truncate = truncate;
+  this.ellipsis = ellipsis;
+  this.quoteQuery = quoteQuery;
+  this.camelize = camelize;
+};
+
 obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
     function($log, ObibaCountriesIsoCodes) {
       this.findByCode = function(code, locale) {
@@ -50,45 +113,13 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
         if (filtered && filtered.length > 0) {
           return filtered[0].code;
         }
-        
+
         $log.error('ng-obiba: Invalid name ', name);
         return name;
       };
     }])
 
-  .service('StringUtils', function () {
-    var self = this;
-    this.capitaliseFirstLetter = function (string) {
-      return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
-    };
-
-    this.replaceAll = function(str, mapObj) {
-      var re = new RegExp(Object.keys(mapObj).join('|'),'gi');
-
-      return str.replace(re, function(matched){
-        return mapObj[matched.toLowerCase()];
-      });
-    };
-
-    this.truncate = function (text, size) {
-      var max = size || 30;
-      return text && text.length > max ? text.substring(0, max) + '...' : text;
-    };
-
-    this.ellipsis = function (text, size) {
-      return size ? self.truncate(text, size) : text;
-    };
-
-    this.quoteQuery = function (text) {
-      text = text.trim();
-
-      if (text.match(/\s+/)) {
-        return '"'+text.replace(/^"|"$/g, '').replace(/"/, '\"')+'"';
-      }
-
-      return text;
-    };
-  })
+  .service('StringUtils', obiba.utils.NgObibaStringUtils)
 
   .filter('ellipsis', ['StringUtils', function (StringUtils) {
     return function (text, size) {
@@ -380,4 +411,3 @@ obiba.utils.EventListenerRegistry = function() {
   this.unregister = unregister;
   this.unregisterAll = unregisterAll;
 };
-

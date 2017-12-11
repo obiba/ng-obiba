@@ -1,5 +1,5 @@
 /*!
- * ng-obiba - v1.5.1
+ * ng-obiba - vbranch-1.5.x
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3

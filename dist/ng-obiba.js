@@ -1,9 +1,9 @@
 /*!
- * ng-obiba - v1.5.0
+ * ng-obiba - vbranch-1.5.x
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-11-14
+ * Date: 2017-12-11
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -350,6 +350,55 @@ if(options.chart.type === 'pieChart'){
 
 obiba.utils = angular.module('obiba.utils', []);
 
+obiba.utils.NgObibaStringUtils = function() {
+
+  function capitaliseFirstLetter(string) {
+    return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
+  }
+
+  function replaceAll(str, mapObj) {
+    var re = new RegExp(Object.keys(mapObj).join('|'),'gi');
+
+    return str.replace(re, function(matched){
+      return mapObj[matched.toLowerCase()];
+    });
+  }
+
+  function truncate(text, size) {
+    var max = size || 30;
+    return text && text.length > max ? text.substring(0, max) + '...' : text;
+  }
+
+  function ellipsis(text, size) {
+    return size ? truncate(text, size) : text;
+  }
+
+  function quoteQuery(text) {
+    text = text.trim();
+
+    if (text.match(/\s+/)) {
+      return '"'+text.replace(/^"|"$/g, '').replace(/"/, '\"')+'"';
+    }
+
+    return text;
+  }
+
+  function camelize(text) {
+    var result = text.replace(/[\-_\s]+(.)?/g, function(match, chr) {
+      return chr ? chr.toUpperCase() : '';
+    });
+
+    return result.substr(0, 1).toLowerCase() + result.substr(1);
+  }
+
+  this.capitaliseFirstLetter = capitaliseFirstLetter;
+  this.replaceAll = replaceAll;
+  this.truncate = truncate;
+  this.ellipsis = ellipsis;
+  this.quoteQuery = quoteQuery;
+  this.camelize = camelize;
+};
+
 obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
     function($log, ObibaCountriesIsoCodes) {
       this.findByCode = function(code, locale) {
@@ -386,45 +435,13 @@ obiba.utils.service('CountriesIsoUtils', ['$log','ObibaCountriesIsoCodes',
         if (filtered && filtered.length > 0) {
           return filtered[0].code;
         }
-        
+
         $log.error('ng-obiba: Invalid name ', name);
         return name;
       };
     }])
 
-  .service('StringUtils', function () {
-    var self = this;
-    this.capitaliseFirstLetter = function (string) {
-      return string ? string.charAt(0).toUpperCase() + string.slice(1) : null;
-    };
-
-    this.replaceAll = function(str, mapObj) {
-      var re = new RegExp(Object.keys(mapObj).join('|'),'gi');
-
-      return str.replace(re, function(matched){
-        return mapObj[matched.toLowerCase()];
-      });
-    };
-
-    this.truncate = function (text, size) {
-      var max = size || 30;
-      return text && text.length > max ? text.substring(0, max) + '...' : text;
-    };
-
-    this.ellipsis = function (text, size) {
-      return size ? self.truncate(text, size) : text;
-    };
-
-    this.quoteQuery = function (text) {
-      text = text.trim();
-
-      if (text.match(/\s+/)) {
-        return '"'+text.replace(/^"|"$/g, '').replace(/"/, '\"')+'"';
-      }
-
-      return text;
-    };
-  })
+  .service('StringUtils', obiba.utils.NgObibaStringUtils)
 
   .filter('ellipsis', ['StringUtils', function (StringUtils) {
     return function (text, size) {
@@ -1604,7 +1621,52 @@ angular.module('obiba.comments')
     }]);
 
 
-;angular.module('templates-main', ['alert/alert-template.tpl.html', 'comments/comment-editor-template.tpl.html', 'comments/comments-template.tpl.html', 'form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'form/form-localized-input-template.tpl.html', 'form/form-radio-group-template.tpl.html', 'form/form-radio-template.tpl.html', 'form/form-textarea-template.tpl.html', 'form/form-ui-select.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
+;/*
+ * Copyright (c) 2017 OBiBa. All rights reserved.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+'use strict';
+
+(function () {
+
+  /**
+   * Directive primarily aimed to download a file via a POST but the submit method can be configured.
+   */
+  angular.module('ngObiba')
+    .directive('obibaFileDownload', function () {
+      return {
+        restrict: 'A',
+        replace: true,
+        scope: {
+          url: '<',
+          method: '@',
+          encoding: '<'
+        },
+        link: function (scope, element) {
+
+          function onClick(/*event*/) {
+            var form = document.createElement('form');
+            form.className = 'hidden';
+            form.method = scope.method || 'POST';
+            form.action = scope.url;
+            form.encType = scope.encoding || 'text/csv';
+            document.body.appendChild(form);
+            form.submit();
+            form.remove();
+          }
+
+          element.on('click', onClick);
+        }
+      };
+    });
+
+})();;angular.module('templates-main', ['alert/alert-template.tpl.html', 'comments/comment-editor-template.tpl.html', 'comments/comments-template.tpl.html', 'form/form-checkbox-template.tpl.html', 'form/form-input-template.tpl.html', 'form/form-localized-input-template.tpl.html', 'form/form-radio-group-template.tpl.html', 'form/form-radio-template.tpl.html', 'form/form-textarea-template.tpl.html', 'form/form-ui-select.tpl.html', 'notification/notification-confirm-modal.tpl.html', 'notification/notification-modal.tpl.html']);
 
 angular.module("alert/alert-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("alert/alert-template.tpl.html",

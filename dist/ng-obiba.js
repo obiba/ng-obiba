@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-12-08
+ * Date: 2017-12-15
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -229,6 +229,11 @@ if(options.chart.type === 'pieChart'){
         // data
         var values = [];
         var data = {};
+        // map
+        function getRadio(){
+          var parentElement = element.parent()[0];
+          return parentElement.clientWidth / scope.config.getDimensions().width;
+        }
         // assuming config.data: [{key: X1, title: Y1, default: Z1, count: A1}, {key: Xn, title: Yn, default: Zn, count: An}, ...]
         scope.config.data.forEach(function (d) {
           data[d.key] = d.value;
@@ -243,33 +248,33 @@ if(options.chart.type === 'pieChart'){
           }
         }
 
-        var colorSelector = new ColorSelector(values,scope.config.color);
+        // Render the SVG
+        function renderMap(ratio){
+          // Make sure to empty the element[0]
+          element[0].innerHTML = '';
+          var colorSelector = new ColorSelector(values,scope.config.color);
 
-        // title
-        var title = scope.config.title;
-        if (title) {
-          d3.select(element[0]).append('div').attr('class', 'title h4').style('text-align', 'center').text(title);
-        }
+          // title
+          var title = scope.config.title;
+          if (title) {
+            d3.select(element[0]).append('div').attr('class', 'title h4').style('text-align', 'center').text(title);
+          }
 
-        // tooltip
-        var tooltip = d3.select(element[0]).append('div')
+          // tooltip
+          var tooltip = d3.select(element[0]).append('div')
             .attr('class', 'hidden chart-tooltip');
 
-        // map
-        var parentElement = element.parent()[0];
-        var ratio = parentElement.clientWidth / scope.config.getDimensions().width;
-
-        var projection = d3.geo.equirectangular()
+          var projection = d3.geo.equirectangular()
             .translate([scope.config.getDimensions().width * ratio / 2, scope.config.getDimensions().height * ratio / 2])
             .scale(scope.config.getScale() * ratio);
-        var path = d3.geo.path().projection(projection);
-        var svg = d3.select(element[0]).append('svg')
+          var path = d3.geo.path().projection(projection);
+          var svg = d3.select(element[0]).append('svg')
             .attr('width', scope.config.getDimensions().width * ratio)
             .attr('height', scope.config.getDimensions().height * ratio);
 
-        var g = svg.append('g');
+          var g = svg.append('g');
 
-        g.selectAll('path')
+          g.selectAll('path')
             .data(ObibaCountriesGeoJson.features)
             .enter()
             .append('path').attr('d', path)
@@ -285,12 +290,19 @@ if(options.chart.type === 'pieChart'){
               }
 
               tooltip.classed('hidden', false)
-                  .attr('style', 'left:' + (mouse[0] + 5) + 'px; top:' + (mouse[1] - 5) + 'px; position: absolute')
-                  .html(tooltipText);
+                .attr('style', 'left:' + (mouse[0] + 5) + 'px; top:' + (mouse[1] - 5) + 'px; position: absolute')
+                .html(tooltipText);
             })
             .on('mouseout', function () {
               tooltip.classed('hidden', true);
             });
+        }
+
+        renderMap(getRadio());
+
+        d3.select(window).on('resize', function () {
+          renderMap(getRadio());
+        });
       }
 
       function lightestColor(colorArray) {

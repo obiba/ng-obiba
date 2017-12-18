@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-12-15
+ * Date: 2017-12-18
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -404,7 +404,7 @@ obiba.utils.NgObibaStringUtils = function() {
   }
 
   function cleanDoubleQuotesLeftUnclosed(inputString) {
-    var outputString = inputString.trim();
+    var outputString = (inputString || '').trim();
     var regexp = new RegExp(/\"/, 'g');    
     var instancesOfDoubleQuoteCharacters = (outputString.match(regexp) || []).length;
 
@@ -416,6 +416,30 @@ obiba.utils.NgObibaStringUtils = function() {
     return outputString;
   }
 
+  function cleanSpecialLuceneCharacters(inputString) {
+    var input = (inputString || '').trim();
+
+    var specialCharRegexp = /&&|\|\||\+|-|!|\?|\^|~|\*|:|\\/g;
+
+    return input.replace(specialCharRegexp, '');
+  }
+
+  function cleanOrEscapeSpecialLuceneBrackets(inputString, escape) {
+    var input = (inputString || '').trim();
+    var specialBracketsRegexp = /([\])}[{(])/g;
+
+    // TODO find a way to ensure braces are close and clean/escape them
+    if (!escape) {
+      return input.replace(specialBracketsRegexp, '');
+    } else {
+      return input.replace(specialBracketsRegexp, function (match, p1) {
+        return '\\' + p1;
+      });
+    }
+  }
+
+  this.cleanOrEscapeSpecialLuceneBrackets = cleanOrEscapeSpecialLuceneBrackets;
+  this.cleanSpecialLuceneCharacters = cleanSpecialLuceneCharacters;
   this.cleanDoubleQuotesLeftUnclosed = cleanDoubleQuotesLeftUnclosed;
   this.capitaliseFirstLetter = capitaliseFirstLetter;
   this.replaceAll = replaceAll;

@@ -1945,7 +1945,7 @@ angular.module("form/form-radio-group-template.tpl.html", []).run(["$templateCac
     "  -->\n" +
     "\n" +
     "<div form-radio ng-repeat=\"option in options\" name=\"{{option.name}}\" model=\"model.design\" value=\"option.value\"\n" +
-    "     label=\"{{option.label}}\" gid=\"{{gid}}\"></div>");
+    "     label=\"{{option.label}}\" gid=\"{{gid}}\" help=\"{{option.help}}\"></div>");
 }]);
 
 angular.module("form/form-radio-template.tpl.html", []).run(["$templateCache", function($templateCache) {

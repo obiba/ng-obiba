@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-12-18
+ * Date: 2017-12-19
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.
@@ -419,7 +419,7 @@ obiba.utils.NgObibaStringUtils = function() {
   function cleanSpecialLuceneCharacters(inputString) {
     var input = (inputString || '').trim();
 
-    var specialCharRegexp = /&&|\|\||\+|-|!|\?|\^|~|\*|:|\\/g;
+    var specialCharRegexp = /&&|\|\||\+|-|!|\?|\^|~|\*|:|\\|\//g;
 
     return input.replace(specialCharRegexp, '');
   }

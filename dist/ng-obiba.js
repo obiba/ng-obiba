@@ -1723,11 +1723,15 @@ angular.module('obiba.comments')
 
           function onClick(/*event*/) {
             scope.formParams = scope.formParams || {};
-            moveUrlParamsToFormParams();
 
             var form = document.createElement('form');
             form.className = 'hidden';
             form.method = scope.method || 'POST';
+
+            if (form.method.match(/post/i)) {
+              moveUrlParamsToFormParams();
+            }
+
             form.action = scope.url;
             form.accept = scope.encoding || 'text/csv';
 

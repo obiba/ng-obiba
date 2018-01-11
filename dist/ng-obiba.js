@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-12-21
+ * Date: 2017-12-22
  */
 /*
  * Copyright (c) 2017 OBiBa. All rights reserved.

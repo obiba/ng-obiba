@@ -1,12 +1,12 @@
 /*!
- * ng-obiba - v1.4.3
+ * ng-obiba - v1.6.0
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2017-12-22
+ * Date: 2018-01-11
  */
 /*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -29,7 +29,7 @@ var obiba = angular.module('ngObiba', [
   'obiba.graphics'
 ]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -347,7 +347,7 @@ if(options.chart.type === 'pieChart'){
         link: link
       };
   }]);;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -784,7 +784,7 @@ obiba.utils.EventListenerRegistry = function() {
   this.unregisterAll = unregisterAll;
 };
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -801,7 +801,7 @@ angular.module('obiba.notification', [
   'ui.bootstrap'
 ]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -900,7 +900,7 @@ angular.module('obiba.notification')
     }]);
 
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -940,7 +940,7 @@ angular.module('obiba.rest', ['obiba.notification'])
 
     }]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -957,7 +957,7 @@ angular.module('obiba.form', [
   'templates-main'
 ]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1019,7 +1019,7 @@ angular.module('obiba.form')
 
     return this;
   });;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1290,7 +1290,7 @@ angular.module('obiba.form')
 
   }]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1423,7 +1423,7 @@ angular.module('obiba.alert', [
 
 }]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1476,7 +1476,7 @@ angular.module('obiba.alert')
       };
     }]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1539,7 +1539,7 @@ angular.module('obiba.alert')
     };
   }]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1559,7 +1559,7 @@ angular.module('obiba.comments', [
   'angularMoment'
 ]);
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1671,7 +1671,7 @@ angular.module('obiba.comments')
 
 
 ;/*
- * Copyright (c) 2017 OBiBa. All rights reserved.
+ * Copyright (c) 2018 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -1770,7 +1770,7 @@ angular.module('obiba.comments')
 angular.module("alert/alert-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("alert/alert-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -1816,7 +1816,7 @@ angular.module("comments/comment-editor-template.tpl.html", []).run(["$templateC
 angular.module("comments/comments-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("comments/comments-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -1859,7 +1859,7 @@ angular.module("comments/comments-template.tpl.html", []).run(["$templateCache",
 angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-checkbox-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -1898,7 +1898,7 @@ angular.module("form/form-checkbox-template.tpl.html", []).run(["$templateCache"
 angular.module("form/form-input-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-input-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -1945,7 +1945,7 @@ angular.module("form/form-input-template.tpl.html", []).run(["$templateCache", f
 angular.module("form/form-localized-input-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-localized-input-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -1985,7 +1985,7 @@ angular.module("form/form-localized-input-template.tpl.html", []).run(["$templat
 angular.module("form/form-radio-group-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-radio-group-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -2001,7 +2001,7 @@ angular.module("form/form-radio-group-template.tpl.html", []).run(["$templateCac
 angular.module("form/form-radio-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-radio-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -2039,7 +2039,7 @@ angular.module("form/form-radio-template.tpl.html", []).run(["$templateCache", f
 angular.module("form/form-textarea-template.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-textarea-template.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -2078,7 +2078,7 @@ angular.module("form/form-textarea-template.tpl.html", []).run(["$templateCache"
 angular.module("form/form-ui-select.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("form/form-ui-select.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -2118,7 +2118,7 @@ angular.module("form/form-ui-select.tpl.html", []).run(["$templateCache", functi
 angular.module("notification/notification-confirm-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("notification/notification-confirm-modal.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +
@@ -2159,7 +2159,7 @@ angular.module("notification/notification-confirm-modal.tpl.html", []).run(["$te
 angular.module("notification/notification-modal.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("notification/notification-modal.tpl.html",
     "<!--\n" +
-    "  ~ Copyright (c) 2017 OBiBa. All rights reserved.\n" +
+    "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" +
     "  ~\n" +
     "  ~ This program and the accompanying materials\n" +
     "  ~ are made available under the terms of the GNU Public License v3.0.\n" +

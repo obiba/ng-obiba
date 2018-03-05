@@ -64,6 +64,17 @@
           stringB = stringB.toString();
         }
 
+        if (typeof stringA === 'boolean' && typeof stringB === 'boolean') {
+          stringA = (+stringA).toString();
+          stringB = (+stringB).toString();          
+        }
+
+        if (stringA === undefined || stringA === null) {
+          return 1;
+        } else if (stringA === stringB) {
+          return 0;
+        }
+
         return stringA.localeCompare(stringB, [], { numeric: true });
       }
 
@@ -89,6 +100,8 @@
       }
 
       function onSortButtonClick(event) {
+        event.preventDefault();
+
         var target = event.currentTarget,
           icon = target.querySelector('i');
 
@@ -111,7 +124,8 @@
         var button = document.createElement('a'),
           icon = document.createElement('i');
 
-        button.className = 'btn btn-sm btn-link';
+        button.className = 'hoffset2';
+        button.href = '';
         button.dataset.columnName = columnHeader.dataset.columnName;
 
         icon.className = 'fa fa-sort';

@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2018-03-02
+ * Date: 2018-03-05
  */
 /*
  * Copyright (c) 2018 OBiBa. All rights reserved.
@@ -1831,6 +1831,17 @@ angular.module('obiba.comments')
           stringB = stringB.toString();
         }
 
+        if (typeof stringA === 'boolean' && typeof stringB === 'boolean') {
+          stringA = (+stringA).toString();
+          stringB = (+stringB).toString();          
+        }
+
+        if (stringA === undefined || stringA === null) {
+          return 1;
+        } else if (stringA === stringB) {
+          return 0;
+        }
+
         return stringA.localeCompare(stringB, [], { numeric: true });
       }
 
@@ -1856,6 +1867,8 @@ angular.module('obiba.comments')
       }
 
       function onSortButtonClick(event) {
+        event.preventDefault();
+
         var target = event.currentTarget,
           icon = target.querySelector('i');
 
@@ -1878,7 +1891,8 @@ angular.module('obiba.comments')
         var button = document.createElement('a'),
           icon = document.createElement('i');
 
-        button.className = 'btn btn-sm btn-link';
+        button.className = 'hoffset2';
+        button.href = '';
         button.dataset.columnName = columnHeader.dataset.columnName;
 
         icon.className = 'fa fa-sort';

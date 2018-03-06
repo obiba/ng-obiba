@@ -19,7 +19,7 @@
   }
 
   angular.module('ngObiba')
-    .directive('obibaTableSorter', ['$timeout', function ($timeout) {
+    .directive('obibaTableSorter', [function () {
       var obibaTableSorterState;
 
       function resolveObjectPath(obj, path) {
@@ -127,8 +127,6 @@
 
         if (existingButton) {
           button = existingButton;
-          button.dataset.order = '';
-          button.querySelector('i').className = 'fa fa-sort';
         } else {
           button.className = 'hoffset2';
           button.href = '';
@@ -165,10 +163,15 @@
         link: function (scope, element) {
           scope.$watch('obibaTableSorter', function (newValue) {
             if (newValue) {
-              $timeout(function () {
-                obibaTableSorterState = new ObibaTableSorterState(scope, element);
+              obibaTableSorterState = new ObibaTableSorterState(scope, element);
                 prepareSortButtons(scope, element);
-              }, 250);
+
+                var existingButton = element[0].querySelector('thead a[data-order="up"]') || element[0].querySelector('thead a[data-order="down"]');
+                if (existingButton) {
+                  var order = existingButton.dataset.order;
+                  obibaTableSorterState.currentTarget = existingButton.dataset.columnName;
+                  obibaTableSorterState.documents.sort(order === 'up' ? obibaTableSorterComparator : reverseObibaTableSorterComparator);
+                }
             }            
           });          
         }

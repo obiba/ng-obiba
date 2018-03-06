@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
 
  * License: GNU Public License version 3
- * Date: 2018-03-05
+ * Date: 2018-03-06
  */
 /*
  * Copyright (c) 2018 OBiBa. All rights reserved.
@@ -1889,17 +1889,24 @@ angular.module('obiba.comments')
 
       function createAndAppendSortButtonToColumnHeader(columnHeader) {
         var button = document.createElement('a'),
+          existingButton = columnHeader.querySelector('a[data-column-name]'),
           icon = document.createElement('i');
 
-        button.className = 'hoffset2';
-        button.href = '';
-        button.dataset.columnName = columnHeader.dataset.columnName;
-
-        icon.className = 'fa fa-sort';
-
-        button.appendChild(icon);
-        columnHeader.appendChild(button);
-
+        if (existingButton) {
+          button = existingButton;
+          button.dataset.order = '';
+          button.querySelector('i').className = 'fa fa-sort';
+        } else {
+          button.className = 'hoffset2';
+          button.href = '';
+          button.dataset.columnName = columnHeader.dataset.columnName;
+  
+          icon.className = 'fa fa-sort';
+  
+          button.appendChild(icon);
+          columnHeader.appendChild(button);  
+        }          
+        
         return button;
       }
 
@@ -1912,6 +1919,7 @@ angular.module('obiba.comments')
               var columnElement = columns[key],
                 button = createAndAppendSortButtonToColumnHeader(columnElement);
 
+              button.removeEventListener('click', onSortButtonClick);
               button.addEventListener('click', onSortButtonClick);
             }
           }
@@ -1922,10 +1930,14 @@ angular.module('obiba.comments')
         restrict: 'A',
         scope: { obibaTableSorter: '=' },
         link: function (scope, element) {
-          $timeout(function () {
-            obibaTableSorterState = new ObibaTableSorterState(scope, element);
-            prepareSortButtons(scope, element);
-          }, 250);
+          scope.$watch('obibaTableSorter', function (newValue) {
+            if (newValue) {
+              $timeout(function () {
+                obibaTableSorterState = new ObibaTableSorterState(scope, element);
+                prepareSortButtons(scope, element);
+              }, 250);
+            }            
+          });          
         }
       };
     }]);

@@ -122,17 +122,24 @@
 
       function createAndAppendSortButtonToColumnHeader(columnHeader) {
         var button = document.createElement('a'),
+          existingButton = columnHeader.querySelector('a[data-column-name]'),
           icon = document.createElement('i');
 
-        button.className = 'hoffset2';
-        button.href = '';
-        button.dataset.columnName = columnHeader.dataset.columnName;
-
-        icon.className = 'fa fa-sort';
-
-        button.appendChild(icon);
-        columnHeader.appendChild(button);
-
+        if (existingButton) {
+          button = existingButton;
+          button.dataset.order = '';
+          button.querySelector('i').className = 'fa fa-sort';
+        } else {
+          button.className = 'hoffset2';
+          button.href = '';
+          button.dataset.columnName = columnHeader.dataset.columnName;
+  
+          icon.className = 'fa fa-sort';
+  
+          button.appendChild(icon);
+          columnHeader.appendChild(button);  
+        }          
+        
         return button;
       }
 
@@ -145,6 +152,7 @@
               var columnElement = columns[key],
                 button = createAndAppendSortButtonToColumnHeader(columnElement);
 
+              button.removeEventListener('click', onSortButtonClick);
               button.addEventListener('click', onSortButtonClick);
             }
           }
@@ -155,10 +163,14 @@
         restrict: 'A',
         scope: { obibaTableSorter: '=' },
         link: function (scope, element) {
-          $timeout(function () {
-            obibaTableSorterState = new ObibaTableSorterState(scope, element);
-            prepareSortButtons(scope, element);
-          }, 250);
+          scope.$watch('obibaTableSorter', function (newValue) {
+            if (newValue) {
+              $timeout(function () {
+                obibaTableSorterState = new ObibaTableSorterState(scope, element);
+                prepareSortButtons(scope, element);
+              }, 250);
+            }            
+          });          
         }
       };
     }]);

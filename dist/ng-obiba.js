@@ -1850,7 +1850,7 @@ angular.module('obiba.comments')
       }
 
       function getNextOrderFromCurrent(order) {
-        return !order || order === 'up' ? 'down' : 'up';
+        return !order || order === 'down' ? 'up' : 'down';
       }
 
       function clearOtherButtonStates(excludedColumnName) {

@@ -44,7 +44,8 @@ angular.module('obiba.form')
         step: '@',
         help: '@',
         placeholder: '@',
-        readonly: '@'
+        readonly: '@',
+        cssClasses: '@'
       },
       templateUrl: 'form/form-input-template.tpl.html',
       compile: function(elem, attrs) {

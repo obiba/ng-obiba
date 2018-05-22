@@ -18,7 +18,7 @@
   <input
       ng-model="model"
       type="{{type}}"
-      class="form-control"
+      class="form-control {{cssClasses}}"
       id="{{name}}"
       name="{{name}}"
       placeholder="{{placeholder | translate}}"
@@ -31,7 +31,7 @@
       ng-disabled="disabled"
       ng-required="required"/>
 
-  <ul class="input-error list-unstyled" ng-show="form[name].$dirty && form[name].$invalid">
+  <ul class="input-error list-unstyled" ng-show="form[name].$dirty && form[name].$invalid && form[name].errors">
     <li ng-show="form[name].$error.required" translate>required</li>
     <li ng-show="form[name].$error.pattern">{{'pattern' | translate}} {{pattern}}</li>
     <li ng-repeat="error in form[name].errors">{{error}}</li>

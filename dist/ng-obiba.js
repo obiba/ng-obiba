@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
  *
  * License: GNU Public License version 3
- * Date: 2018-03-09
+ * Date: 2018-05-22
  */
 /*
  * Copyright (c) 2018 OBiBa. All rights reserved.
@@ -935,7 +935,8 @@ angular.module('obiba.form')
                 step: '@',
                 help: '@',
                 placeholder: '@',
-                readonly: '@'
+                readonly: '@',
+                cssClasses: '@'
             },
             templateUrl: 'form/form-input-template.tpl.html',
             compile: function (elem, attrs) {
@@ -1841,7 +1842,7 @@ angular.module("form/form-input-template.tpl.html", []).run(["$templateCache", f
     "  <input\n" +
     "      ng-model=\"model\"\n" +
     "      type=\"{{type}}\"\n" +
-    "      class=\"form-control\"\n" +
+    "      class=\"form-control {{cssClasses}}\"\n" +
     "      id=\"{{name}}\"\n" +
     "      name=\"{{name}}\"\n" +
     "      placeholder=\"{{placeholder | translate}}\"\n" +
@@ -1854,7 +1855,7 @@ angular.module("form/form-input-template.tpl.html", []).run(["$templateCache", f
     "      ng-disabled=\"disabled\"\n" +
     "      ng-required=\"required\"/>\n" +
     "\n" +
-    "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid\">\n" +
+    "  <ul class=\"input-error list-unstyled\" ng-show=\"form[name].$dirty && form[name].$invalid && form[name].errors\">\n" +
     "    <li ng-show=\"form[name].$error.required\" translate>required</li>\n" +
     "    <li ng-show=\"form[name].$error.pattern\">{{'pattern' | translate}} {{pattern}}</li>\n" +
     "    <li ng-repeat=\"error in form[name].errors\">{{error}}</li>\n" +

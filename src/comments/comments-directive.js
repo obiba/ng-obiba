@@ -76,12 +76,17 @@ angular.module('obiba.comments')
   .controller('ObibaCommentsController', ['$scope', 'moment',
     function ($scope, moment) {
 
-      var clearSelected = function () {
+      function clearSelected() {
         $scope.selected = -1;
-      };
-      var canDoAction = function (comment, action) {
+      }
+      
+      function canDoAction(comment, action) {
         return angular.isUndefined(action) || (!angular.isUndefined(comment.actions) && comment.actions.indexOf(action) !== -1);
-      };
+      }
+
+      function fromNow(dateString) {
+        return moment(dateString).fromNow();
+      }
 
       $scope.canEdit = function (index) {
         return canDoAction($scope.comments[index], $scope.editAction);
@@ -103,9 +108,23 @@ angular.module('obiba.comments')
         $scope.onDelete()($scope.comments[index]);
       };
 
-      $scope.fromNow = function(dateString) {
-        return moment(dateString).fromNow();
-      };
+      $scope.$watch('comments', function() {
+        if ($scope.comments) {
+          $scope.comments.$promise.then(function(comments) {
+            return comments.map(function(comment) {
+              if (comment.modifiedBy) {
+                comment.modifierFullName = $scope.nameResolver({profile: comment.modifiedByProfile});
+                comment.modifiedOn = fromNow(comment.timestamps.lastUpdate);
+              } else {
+                comment.creatorFullName = $scope.nameResolver({profile: comment.createdByProfile});
+                comment.createdOn = fromNow(comment.timestamps.created);
+              }
+
+              return comment;
+            });
+          })
+        }
+      })
 
     }]);
 

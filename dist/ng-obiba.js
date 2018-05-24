@@ -3,7 +3,7 @@
  * https://github.com/obiba/ng-obiba
  *
  * License: GNU Public License version 3
- * Date: 2018-05-22
+ * Date: 2018-05-24
  */
 /*
  * Copyright (c) 2018 OBiBa. All rights reserved.
@@ -1436,12 +1436,15 @@ angular.module('obiba.comments')
     }])
     .controller('ObibaCommentsController', ['$scope', 'moment',
     function ($scope, moment) {
-        var clearSelected = function () {
+        function clearSelected() {
             $scope.selected = -1;
-        };
-        var canDoAction = function (comment, action) {
+        }
+        function canDoAction(comment, action) {
             return angular.isUndefined(action) || (!angular.isUndefined(comment.actions) && comment.actions.indexOf(action) !== -1);
-        };
+        }
+        function fromNow(dateString) {
+            return moment(dateString).fromNow();
+        }
         $scope.canEdit = function (index) {
             return canDoAction($scope.comments[index], $scope.editAction);
         };
@@ -1461,9 +1464,23 @@ angular.module('obiba.comments')
         $scope.remove = function (index) {
             $scope.onDelete()($scope.comments[index]);
         };
-        $scope.fromNow = function (dateString) {
-            return moment(dateString).fromNow();
-        };
+        $scope.$watch('comments', function () {
+            if ($scope.comments) {
+                $scope.comments.$promise.then(function (comments) {
+                    return comments.map(function (comment) {
+                        if (comment.modifiedBy) {
+                            comment.modifierFullName = $scope.nameResolver({ profile: comment.modifiedByProfile });
+                            comment.modifiedOn = fromNow(comment.timestamps.lastUpdate);
+                        }
+                        else {
+                            comment.creatorFullName = $scope.nameResolver({ profile: comment.createdByProfile });
+                            comment.createdOn = fromNow(comment.timestamps.created);
+                        }
+                        return comment;
+                    });
+                });
+            }
+        });
     }]);
 //# sourceMappingURL=comments-directive.js.map
 /*
@@ -1757,8 +1774,8 @@ angular.module("comments/comments-template.tpl.html", []).run(["$templateCache",
     "        <div class=\"panel-heading\">\n" +
     "          <div>\n" +
     "            <span class=\"obiba-comment-icon\"><i class=\"glyphicon glyphicon-comment\"></i></span>\n" +
-    "            <span ng-if=\"!comment.modifiedBy\">{{'comment.created-by' | translate}} {{nameResolver()(comment.createdByProfile) || comment.createdBy}} {{fromNow(comment.timestamps.created)}}</span>\n" +
-    "            <span ng-if=\"comment.modifiedBy\"> {{'comment.modified-by' | translate}} {{nameResolver()(comment.modifiedByProfile) || comment.modifiedBy}} {{fromNow(comment.timestamps.lastUpdate)}}</span>\n" +
+    "            <span ng-if=\"!comment.modifiedBy\">{{'comment.created-by' | translate}} {{comment.creatorFullName || comment.createdBy}} {{comment.createdOn}}</span>\n" +
+    "            <span ng-if=\"comment.modifiedBy\"> {{'comment.modified-by' | translate}} {{comment.modifierFullName || comment.modifiedBy}} {{comment.modifiedOn}}</span>\n" +
     "            <span class=\"pull-right\">\n" +
     "              <a ng-if=\"canEdit($index)\" ng-click=\"edit($index)\"\n" +
     "                 class=\"btn btn-primary btn-xs\">\n" +

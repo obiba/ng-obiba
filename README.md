@@ -8,41 +8,37 @@ If you are using OBiBa software, please cite our work in your code, websites, pu
 
 ## How to build?
 
-Install NodeJS, Grunt and Bower:
+Install NodeJS:
 
 ```
-sudo add-apt-repository -y ppa:chris-lea/node.js
-sudo apt-get install -y nodejs
-npm install -g grunt-cli bower
+curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+nvm install
 ```
 
 Download dependencies:
 
 ```
 npm install
-bower install
 ```
 
 Build project:
 
 ```
-grunt
+npm run dist
 ```
-
-Test coverage available in `/coverage` dir.
 
 ## How to use it?
 
 In your project add a dependency to ng-obiba:
 
 ```
-bower install git@github.com:obiba/ng-obiba.git --save
+npm install git@github.com:obiba/ng-obiba.git
 ```
 
 To update to latest ng-obiba version:
 
 ```
-bower update
+npm update
 ```
 
 

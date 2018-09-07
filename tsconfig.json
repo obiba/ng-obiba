@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "rootDir": "src",
+    "allowJs": true,
+    "target": "es5",
+    "sourceMap": true,
+    "removeComments": false,
+    "outDir": "built"
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

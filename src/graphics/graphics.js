@@ -172,6 +172,40 @@ if(options.chart.type === 'pieChart'){
   .directive('obibaGeo', ['ObibaCountriesGeoJson',
     function (ObibaCountriesGeoJson) {
 
+      function luma(rgbColor) {
+        return rgbColor.r * 0.2126 + rgbColor.g * 0.7152 + rgbColor.b * 0.0722;
+      }
+
+      function colorComparator(colorA, colorB) {
+        if (colorA === colorB) {
+          return 0;
+        }
+
+        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorB)) ? 1 : -1;
+      }
+
+      function lightestColor(colorArray) {
+        // according to ITU-R Recommendation BT.709, HDTV forms luma (D'Y) using D'R, D'G and D'B coefficients 0.2126, 0.7152, and 0.0722.
+        // http://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf
+
+        if (!Array.isArray(colorArray)) {
+          return colorArray;
+        }
+
+        colorArray.sort(colorComparator);
+
+        return colorArray.reduce(function (acc, val) {
+          if (!acc) {
+            return val;
+          }
+
+          var rgbVal = d3.rgb(val),
+              rbgAcc = d3.rgb(acc);
+
+          return luma(rgbVal) > luma(rbgAcc) ? val : acc;
+        });
+      }
+
       function ColorSelector(values, palette) {
         var sortedUniqueValues =
           values.filter(function(item, pos) {
@@ -273,40 +307,6 @@ if(options.chart.type === 'pieChart'){
         d3.select(window).on('resize', function () {
           renderMap(getRadio());
         });
-      }
-
-      function lightestColor(colorArray) {
-        // according to ITU-R Recommendation BT.709, HDTV forms luma (D'Y) using D'R, D'G and D'B coefficients 0.2126, 0.7152, and 0.0722.
-        // http://www.itu.int/dms_pubrec/itu-r/rec/bt/R-REC-BT.709-6-201506-I!!PDF-E.pdf
-
-        if (!Array.isArray(colorArray)) {
-          return colorArray;
-        }
-
-        colorArray.sort(colorComparator);
-
-        return colorArray.reduce(function (acc, val) {
-          if (!acc) {
-            return val;
-          }
-
-          var rgbVal = d3.rgb(val),
-              rbgAcc = d3.rgb(acc);
-
-          return luma(rgbVal) > luma(rbgAcc) ? val : acc;
-        });
-      }
-
-      function colorComparator(colorA, colorB) {
-        if (colorA === colorB) {
-          return 0;
-        }
-
-        return luma(d3.rgb(colorA)) > luma(d3.rgb(colorB)) ? 1 : -1;
-      }
-
-      function luma(rgbColor) {
-        return rgbColor.r * 0.2126 + rgbColor.g * 0.7152 + rgbColor.b * 0.0722;
       }
 
       return {

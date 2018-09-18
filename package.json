@@ -35,7 +35,7 @@
     "uglify-js": "^3.4.9"
   },
   "config": {
-    "buildSources": "built/ng-obiba.js built/graphics/graphics.js built/utils/utils.js built/notification/notification.js built/notification/notification-controller.js built/rest/rest.js built/form/form.js built/form/form-service.js built/form/form-directive.js built/alert/alert.js built/alert/alert-service.js built/alert/alert-directive.js built/comments/comments.js built/comments/comments-directive.js built/directives/*.js built/templates.js"
+    "buildSources": "built/ng-obiba.js built/utils/utils.js built/graphics/graphics.js built/notification/notification.js built/notification/notification-controller.js built/rest/rest.js built/form/form.js built/form/form-service.js built/form/form-directive.js built/alert/alert.js built/alert/alert-service.js built/alert/alert-directive.js built/comments/comments.js built/comments/comments-directive.js built/directives/*.js built/templates.js"
   },
   "scripts": {
     "clean": "rm -rf dist built",

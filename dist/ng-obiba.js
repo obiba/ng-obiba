@@ -47,7 +47,7 @@ obiba.utils.NgObibaStringUtils = function() {
     }
     function cleanSpecialLuceneCharacters(inputString) {
         var input = (inputString || "").trim();
-        var specialCharRegexp = /[!^~*:\\/]/g;
+        var specialCharRegexp = /[!^~:\\/]/g;
         return input.replace(specialCharRegexp, "");
     }
     function cleanOrEscapeSpecialLuceneBrackets(inputString, escape) {

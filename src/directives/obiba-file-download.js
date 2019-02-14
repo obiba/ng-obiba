@@ -23,6 +23,7 @@
         restrict: 'A',
         replace: true,
         scope: {
+          getUrl: '&',
           url: '<',
           formParams: '<',
           method: '@',
@@ -60,7 +61,7 @@
               moveUrlParamsToFormParams();
             }
 
-            form.action = scope.url;
+            form.action = scope.getUrl ? scope.getUrl({}) : scope.url;
             form.accept = scope.encoding || 'text/csv';
 
             Object.keys(scope.formParams).forEach(function(key){

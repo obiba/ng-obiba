@@ -2879,6 +2879,7 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
             restrict: "A",
             replace: true,
             scope: {
+                getUrl: "&",
                 url: "<",
                 formParams: "<",
                 method: "@",
@@ -2908,7 +2909,7 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
                     if (form.method.match(/post/i)) {
                         moveUrlParamsToFormParams();
                     }
-                    form.action = scope.url;
+                    form.action = scope.getUrl ? scope.getUrl({}) : scope.url;
                     form.accept = scope.encoding || "text/csv";
                     Object.keys(scope.formParams).forEach(function(key) {
                         var input = document.createElement("input");

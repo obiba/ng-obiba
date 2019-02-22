@@ -2909,7 +2909,7 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
                     if (form.method.match(/post/i)) {
                         moveUrlParamsToFormParams();
                     }
-                    form.action = scope.getUrl ? scope.getUrl({}) : scope.url;
+                    form.action = scope.url ? scope.url : scope.getUrl({});
                     form.accept = scope.encoding || "text/csv";
                     Object.keys(scope.formParams).forEach(function(key) {
                         var input = document.createElement("input");

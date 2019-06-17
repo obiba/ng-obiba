@@ -2886,8 +2886,8 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
                 encoding: "<"
             },
             link: function(scope, element) {
-                function moveUrlParamsToFormParams() {
-                    var url = scope.url;
+                function moveUrlParamsToFormParams(url) {
+                    url = url || scope.url;
                     if (url) {
                         var index = url.indexOf("?");
                         if (index > -1) {
@@ -2907,9 +2907,9 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
                     form.className = "hidden";
                     form.method = scope.method || "POST";
                     if (form.method.match(/post/i)) {
-                        moveUrlParamsToFormParams();
+                        moveUrlParamsToFormParams(scope.url ? scope.url : scope.getUrl({}));
                     }
-                    form.action = scope.url ? scope.url : scope.getUrl({});
+                    form.action = (scope.url ? scope.url : scope.getUrl({})).split("?", 1)[0];
                     form.accept = scope.encoding || "text/csv";
                     Object.keys(scope.formParams).forEach(function(key) {
                         var input = document.createElement("input");

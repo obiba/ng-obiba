@@ -45,7 +45,7 @@
                   }
                 });
 
-                scope.url = url.substring(0, index);
+                return url.substring(0, index);
               }
             }
           }
@@ -57,11 +57,12 @@
             form.className = 'hidden';
             form.method = scope.method || 'POST';
 
+            var url = scope.url;
             if (form.method.match(/post/i)) {
-              moveUrlParamsToFormParams(scope.url ? scope.url : scope.getUrl({}));
+              url = moveUrlParamsToFormParams(url ? url : scope.getUrl({}));
             }
 
-            form.action = (scope.url ? scope.url : scope.getUrl({})).split('?', 1)[0];
+            form.action = url.split('?', 1)[0];
             form.accept = scope.encoding || 'text/csv';
 
             Object.keys(scope.formParams).forEach(function(key){

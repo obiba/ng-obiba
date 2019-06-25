@@ -2906,9 +2906,9 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
                     var form = document.createElement("form");
                     form.className = "hidden";
                     form.method = scope.method || "POST";
-                    var url = scope.url;
+                    var url = scope.url ? scope.url : scope.getUrl({});
                     if (form.method.match(/post/i)) {
-                        url = moveUrlParamsToFormParams(url ? url : scope.getUrl({}));
+                        url = moveUrlParamsToFormParams(url);
                     }
                     form.action = url.split("?", 1)[0];
                     form.accept = scope.encoding || "text/csv";

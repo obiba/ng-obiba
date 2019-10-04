@@ -2900,12 +2900,15 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
                             return url.substring(0, index);
                         }
                     }
+                    return url;
                 }
                 function onClick() {
                     scope.formParams = scope.formParams || {};
                     var form = document.createElement("form");
-                    form.className = "hidden";
-                    form.method = scope.method || "POST";
+                    form.setAttribute("class", "hidden");
+                    if (scope.method && scope.method.toUpperCase() !== "GET") {
+                        scope.method = "post";
+                    }
                     var url = scope.url ? scope.url : scope.getUrl({});
                     if (form.method.match(/post/i)) {
                         url = moveUrlParamsToFormParams(url);

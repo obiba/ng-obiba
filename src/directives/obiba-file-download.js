@@ -48,6 +48,8 @@
                 return url.substring(0, index);
               }
             }
+
+            return url;
           }
 
           function onClick(/*event*/) {

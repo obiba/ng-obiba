@@ -2900,6 +2900,7 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
                             return url.substring(0, index);
                         }
                     }
+                    return url;
                 }
                 function onClick() {
                     scope.formParams = scope.formParams || {};

@@ -57,10 +57,7 @@
 
             var form = document.createElement('form');
             form.setAttribute('class', 'hidden');
-
-            if (scope.method && scope.method.toUpperCase() !== 'GET') {
-              scope.method = 'post';
-            }
+            form.setAttribute('method', scope.method || 'post');
 
             var url = scope.url ? scope.url : scope.getUrl({});
             if (form.method.match(/post/i)) {

@@ -1984,6 +1984,7 @@ angular.module("obiba.graphics", [ "nvd3", "obiba.utils" ]).factory("D3GeoConfig
         };
         this._scale = 150;
         this.title = "";
+        this.subtitle = "";
     }
     D3GeoConfig.prototype.withData = function(data) {
         this.data = data;
@@ -1995,6 +1996,10 @@ angular.module("obiba.graphics", [ "nvd3", "obiba.utils" ]).factory("D3GeoConfig
     };
     D3GeoConfig.prototype.withTitle = function(title) {
         this.title = title;
+        return this;
+    };
+    D3GeoConfig.prototype.withSubtitle = function(subtitle) {
+        this.subtitle = subtitle;
         return this;
     };
     D3GeoConfig.prototype.getDimensions = function() {
@@ -2213,6 +2218,10 @@ angular.module("obiba.graphics", [ "nvd3", "obiba.utils" ]).factory("D3GeoConfig
             }).on("mouseout", function() {
                 tooltip.classed("hidden", true);
             });
+            var subtitle = scope.config.subtitle;
+            if (subtitle) {
+                d3.select(element[0]).append("div").attr("class", "sub-title h5").style("text-align", "center").text(subtitle);
+            }
         }
         renderMap(getRadio());
         d3.select(window).on("resize", function() {

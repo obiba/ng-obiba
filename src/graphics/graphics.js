@@ -18,6 +18,7 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
       this._dimensions = {width: 960, height: 500}; // default geoMercator translate dimensions
       this._scale = 150; // default geoMercator scale
       this.title = '';
+      this.subtitle = '';
     }
 
     D3GeoConfig.prototype.withData = function (data) {
@@ -32,6 +33,11 @@ angular.module('obiba.graphics', ['nvd3', 'obiba.utils'])
 
     D3GeoConfig.prototype.withTitle = function (title) {
       this.title = title;
+      return this;
+    };
+
+    D3GeoConfig.prototype.withSubtitle = function (subtitle) {
+      this.subtitle = subtitle;
       return this;
     };
 
@@ -300,6 +306,11 @@ if(options.chart.type === 'pieChart'){
             .on('mouseout', function () {
               tooltip.classed('hidden', true);
             });
+          // subTitle
+          var subtitle = scope.config.subtitle;
+          if(subtitle){
+            d3.select(element[0]).append('div').attr('class', 'sub-title h5').style('text-align', 'center').text(subtitle);
+          }
         }
 
         renderMap(getRadio());

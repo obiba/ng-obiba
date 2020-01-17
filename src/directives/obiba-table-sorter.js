@@ -66,7 +66,7 @@
 
         if (typeof stringA === 'boolean' && typeof stringB === 'boolean') {
           stringA = (+stringA).toString();
-          stringB = (+stringB).toString();          
+          stringB = (+stringB).toString();
         }
 
         if (stringA === undefined || stringA === null) {
@@ -75,7 +75,7 @@
           return 0;
         }
 
-        return stringA.localeCompare(stringB, [], { numeric: true });
+        return String(stringA || '').localeCompare(String(stringB || ''), [], { numeric: true });
       }
 
       function reverseObibaTableSorterComparator(a, b) {
@@ -131,13 +131,13 @@
           button.className = 'hoffset2';
           button.href = '';
           button.dataset.columnName = columnHeader.dataset.columnName;
-  
+
           icon.className = 'fa fa-sort';
-  
+
           button.appendChild(icon);
-          columnHeader.appendChild(button);  
-        }          
-        
+          columnHeader.appendChild(button);
+        }
+
         return button;
       }
 
@@ -172,8 +172,8 @@
                   obibaTableSorterState.currentTarget = existingButton.dataset.columnName;
                   obibaTableSorterState.documents.sort(order === 'up' ? obibaTableSorterComparator : reverseObibaTableSorterComparator);
                 }
-            }            
-          });          
+            }
+          });
         }
       };
     }]);

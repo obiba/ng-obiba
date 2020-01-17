@@ -3011,7 +3011,7 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
             } else if (stringA === stringB) {
                 return 0;
             }
-            return stringA.localeCompare(stringB, [], {
+            return String(stringA || "").localeCompare(String(stringB, ""), [], {
                 numeric: true
             });
         }

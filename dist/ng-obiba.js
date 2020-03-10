@@ -1,6 +1,6 @@
 "use strict";
 
-var obiba = angular.module("ngObiba", [ "obiba.form", "obiba.notification", "obiba.rest", "hc.marked", "obiba.utils", "obiba.alert", "obiba.comments", "obiba.graphics" ]);
+var obiba = angular.module("ngObiba", [ "obiba.form", "obiba.notification", "obiba.rest", "hc.marked", "obiba.utils", "obiba.alert", "obiba.comments", "obiba.graphics", "obiba.simpleMde" ]);
 
 "use strict";
 
@@ -3011,7 +3011,7 @@ angular.module("obiba.comments").config([ "markedProvider", function(markedProvi
             } else if (stringA === stringB) {
                 return 0;
             }
-            return String(stringA || "").localeCompare(String(stringB, ""), [], {
+            return String(stringA || "").localeCompare(String(stringB || ""), [], {
                 numeric: true
             });
         }
@@ -3108,4 +3108,110 @@ angular.module("templates-main", []).run([ "$templateCache", function($templateC
     $templateCache.put("form/form-ui-select.tpl.html", "\x3c!--\n" + "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" + "  ~\n" + "  ~ This program and the accompanying materials\n" + "  ~ are made available under the terms of the GNU Public License v3.0.\n" + "  ~\n" + "  ~ You should have received a copy of the GNU General Public License\n" + "  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.\n" + "  --\x3e\n" + "\n" + '<div ng-if="multiple">\n' + '  <div class="form-group">\n' + '    <label class="control-label" ng-show="showTitle">{{title}}</label>\n' + '    <ui-select ng-disabled="disabled" multiple="multiple" theme="bootstrap" ng-model="data.selected" reset-search-input="true">\n' + '      <ui-select-match><span ng-bind-html="$item[autoComplete.label]"></span></ui-select-match>\n' + '      <ui-select-choices repeat="item[autoComplete.value] as item in items | filter: $select.search">\n' + "        {{formatList(item)}}\n" + "      </ui-select-choices>\n" + "    </ui-select>\n" + '    <span class="help-block" sf-message="description"></span>\n' + "  </div>\n" + "</div>\n" + '<div ng-if="!multiple">\n' + '  <div class="form-group">\n' + '    <label class="control-label" ng-show="showTitle">{{title}}</label>\n' + '    <ui-select ng-disabled="disabled" theme="bootstrap" ng-model="data.selected">\n' + '      <ui-select-match><span ng-bind-html="$select.selected[autoComplete.label]"></span></ui-select-match>\n' + '      <ui-select-choices repeat="item[autoComplete.value] as item in items | filter: $select.search">\n' + "        {{formatList(item)}}\n" + "      </ui-select-choices>\n" + "    </ui-select>\n" + '    <span class="help-block" sf-message="description"></span>\n' + "  </div>\n" + "</div>");
     $templateCache.put("notification/notification-confirm-modal.tpl.html", "\x3c!--\n" + "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" + "  ~\n" + "  ~ This program and the accompanying materials\n" + "  ~ are made available under the terms of the GNU Public License v3.0.\n" + "  ~\n" + "  ~ You should have received a copy of the GNU General Public License\n" + "  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.\n" + "  --\x3e\n" + "\n" + '<div class="modal-content">\n' + "\n" + '  <div class="modal-header">\n' + '    <button type="button" class="close" aria-hidden="true" ng-click="cancel()">&times;</button>\n' + '    <h4 class="modal-title">\n' + '      <i class="fa fa-exclamation-triangle"></i>\n' + '      <span ng-hide="confirm.title" translate>confirmation</span>\n' + "      {{confirm.title}}\n" + "    </h4>\n" + "  </div>\n" + "\n" + '  <div class="modal-body">\n' + "    <p>{{confirm.message}}</p>\n" + "  </div>\n" + "\n" + '  <div class="modal-footer">\n' + '    <button type="button" class="btn btn-default" ng-click="cancel()">\n' + '      <span ng-hide="confirm.cancel" translate>cancel</span>\n' + "      {{confirm.cancel}}\n" + "    </button>\n" + '    <button type="button" class="btn btn-primary" ng-click="ok()">\n' + '      <span ng-hide="confirm.ok" translate>ok</span>\n' + "      {{confirm.ok}}\n" + "    </button>\n" + "  </div>\n" + "\n" + "</div>");
     $templateCache.put("notification/notification-modal.tpl.html", "\x3c!--\n" + "  ~ Copyright (c) 2018 OBiBa. All rights reserved.\n" + "  ~\n" + "  ~ This program and the accompanying materials\n" + "  ~ are made available under the terms of the GNU Public License v3.0.\n" + "  ~\n" + "  ~ You should have received a copy of the GNU General Public License\n" + "  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.\n" + "  --\x3e\n" + "\n" + '<div class="modal-content">\n' + "\n" + '  <div class="modal-header">\n' + '    <button type="button" class="close" aria-hidden="true" ng-click="close()">&times;</button>\n' + '    <h4 class="modal-title">\n' + '      <i ng-hide="notification.iconClass" class="fa fa-info-circle"></i>\n' + '      <i ng-show="notification.iconClass" class="fa {{notification.iconClass}}"></i>\n' + "      <span ng-hide=\"notification.title\" translate>{{notification.titleKey || 'notification'}}</span>\n" + "      {{notification.title}}\n" + "    </h4>\n" + "  </div>\n" + "\n" + '  <div class="modal-body">\n' + "    <p>{{notification.message}}</p>\n" + "  </div>\n" + "\n" + '  <div class="modal-footer">\n' + '    <button type="button" class="btn btn-default" ng-click="close()">\n' + "      <span translate>close</span>\n" + "    </button>\n" + "  </div>\n" + "\n" + "</div>");
+    $templateCache.put("simple-mde/simple-mde.tpl.html", '<div class="obiba-simple-mde">\n' + '    <textarea style="display: none;"></textarea>\n' + "</div>");
 } ]);
+
+"use strict";
+
+angular.module("obiba.simpleMde", [ "templates-main" ]);
+
+"use strict";
+
+(function() {
+    angular.module("obiba.simpleMde").directive("obibaSimpleMde", [ "LocaleStringUtils", function(LocaleStringUtils) {
+        return {
+            restrict: "E",
+            replace: true,
+            scope: {
+                text: "=",
+                update: "<"
+            },
+            templateUrl: "simple-mde/simple-mde.tpl.html",
+            link: function(scope, element) {
+                var simpleMde = null;
+                var parentDiv = element;
+                var defaultToolbar = [ {
+                    name: "bold",
+                    action: SimpleMDE.toggleBold,
+                    className: "fa fa-bold",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.bold")
+                }, {
+                    name: "italic",
+                    action: SimpleMDE.toggleItalic,
+                    className: "fa fa-italic",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.italic")
+                }, {
+                    name: "heading",
+                    action: SimpleMDE.toggleHeadingSmaller,
+                    className: "fa fa-header",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.heading")
+                }, "|", {
+                    name: "quote",
+                    action: SimpleMDE.toggleBlockquote,
+                    className: "fa fa-quote-left",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.quote")
+                }, {
+                    name: "unordered-list",
+                    action: SimpleMDE.toggleUnorderedList,
+                    className: "fa fa-list-ul",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.unordered_list")
+                }, {
+                    name: "ordered-list",
+                    action: SimpleMDE.toggleOrderedList,
+                    className: "fa fa-list-ol",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.ordered_list")
+                }, "|", {
+                    name: "link",
+                    action: SimpleMDE.drawLink,
+                    className: "fa fa-link",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.link")
+                }, {
+                    name: "image",
+                    action: SimpleMDE.drawImage,
+                    className: "fa fa-picture-o",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.image")
+                }, {
+                    name: "table",
+                    action: SimpleMDE.drawTable,
+                    className: "fa fa-table",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.table")
+                }, "|", {
+                    name: "preview",
+                    action: SimpleMDE.togglePreview,
+                    className: "fa fa-eye no-disable",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.preview")
+                } ];
+                function onSimpleMdeChange() {
+                    scope.text = simpleMde.value();
+                }
+                function init() {
+                    simpleMde = new SimpleMDE({
+                        element: parentDiv.find("textarea")[0],
+                        spellChecker: false,
+                        toolbar: defaultToolbar,
+                        forceSync: true,
+                        status: false
+                    });
+                    simpleMde.codemirror.on("change", onSimpleMdeChange);
+                }
+                function onWatch() {
+                    if (simpleMde && scope.text) {
+                        if (scope.update) {
+                            simpleMde.value(scope.text);
+                        }
+                    }
+                }
+                function onDestroy() {
+                    if (simpleMde) {
+                        simpleMde.toTextArea();
+                        simpleMde = null;
+                    }
+                    scope.watchHandler();
+                }
+                init();
+                scope.watchHandler = scope.$watch("update", onWatch);
+                scope.$on("$destroy", onDestroy);
+            }
+        };
+    } ]);
+})();

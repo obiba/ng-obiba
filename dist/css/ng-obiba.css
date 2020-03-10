@@ -81,6 +81,11 @@ div#obiba-comments .panel-heading {
 .close:focus {
   color: #000 !important;
 }
+div.obiba-simple-mde .CodeMirror,
+div.obiba-simple-mde .CodeMirror-scroll {
+  min-height: 15em !important;
+  max-height: 15em !important;
+}
 @media print {
   div.panel {
     page-break-inside: avoid;

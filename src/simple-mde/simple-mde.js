@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 OBiBa. All rights reserved.
+ * Copyright (c) 2017 OBiBa. All rights reserved.
  *
  * This program and the accompanying materials
  * are made available under the terms of the GNU Public License v3.0.
@@ -10,15 +10,4 @@
 
 'use strict';
 
-/* exported obiba */
-var obiba = angular.module('ngObiba', [
-  'obiba.form',
-  'obiba.notification',
-  'obiba.rest',
-  'hc.marked',
-  'obiba.utils',
-  'obiba.alert',
-  'obiba.comments',
-  'obiba.graphics',
-  'obiba.simpleMde'
-]);
+angular.module('obiba.simpleMde', ['templates-main']);

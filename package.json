@@ -18,16 +18,18 @@
   },
   "dependencies": {
     "@types/angular": "^1.6.50",
-    "angular": "^1.6.9",
-    "angular-marked": "^1.2.2",
-    "angular-moment": "^1.2.0",
-    "angular-nvd3": "^1.0.9",
-    "angular-sanitize": "^1.6.9",
-    "angular-translate": "^2.17.0",
-    "angular-ui-bootstrap": "^2.5.6"
+    "angular": "1.6.9",
+    "angular-marked": "1.2.2",
+    "angular-moment": "1.2.0",
+    "angular-nvd3": "1.0.9",
+    "angular-sanitize": "1.6.9",
+    "angular-translate": "2.17.0",
+    "angular-ui-bootstrap": "2.5.6",
+    "simplemde": "^1.11.2"
   },
   "devDependencies": {
     "angular-template-cache": "^1.3.1",
+    "bootstrap": "^4.4.1",
     "jshint": "^2.9.6",
     "less": "^3.8.1",
     "tslint": "^5.11.0",
@@ -35,7 +37,7 @@
     "uglify-js": "^3.4.9"
   },
   "config": {
-    "buildSources": "built/ng-obiba.js built/utils/utils.js built/graphics/graphics.js built/notification/notification.js built/notification/notification-controller.js built/rest/rest.js built/form/form.js built/form/form-service.js built/form/form-directive.js built/alert/alert.js built/alert/alert-service.js built/alert/alert-directive.js built/comments/comments.js built/comments/comments-directive.js built/directives/*.js built/templates.js"
+    "buildSources": "built/ng-obiba.js built/utils/utils.js built/graphics/graphics.js built/notification/notification.js built/notification/notification-controller.js built/rest/rest.js built/form/form.js built/form/form-service.js built/form/form-directive.js built/alert/alert.js built/alert/alert-service.js built/alert/alert-directive.js built/comments/comments.js built/comments/comments-directive.js built/directives/*.js built/templates.js built/simple-mde/simple-mde.js built/simple-mde/simple-mde-directive.js"
   },
   "scripts": {
     "clean": "rm -rf dist built",

@@ -1,0 +1,71 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <link rel="stylesheet" href="../node_modules/simplemde/dist/simplemde.min.css">
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../dist/css/ng-obiba.css">
+
+
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/js/bootstrap.js">
+
+  <script src="../node_modules/angular/angular.min.js"></script>
+  <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+  <script src="../node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="../node_modules/angular-translate/dist/angular-translate.js"></script>
+  <script src="../node_modules/marked/marked.min.js"></script>
+  <script src="../node_modules/angular-marked/dist/angular-marked.js"></script>
+  <script src="../node_modules/moment/moment.js"></script>
+  <script src="../node_modules/angular-moment/angular-moment.js"></script>
+  <script src="../node_modules/simplemde/dist/simplemde.min.js"></script>
+  <script src="../dist/ng-obiba.js"></script>
+
+  <script>
+
+    angular.module('test', ['hc.marked', 'obiba.simpleMde', 'obiba.comments']).controller('FormController', function($scope) {
+      var langs = ['en', 'fr'];
+      var langIndex = 0;
+
+      $scope.initial = {
+        en: {
+          show: true,
+          text: "This is a test"
+        },
+        fr: {
+          show: false,
+          text: "### This will render a heading 3 tag   "
+          // text: "### This will render a heading 3 tag   \n\ \n\ * this is first item\n\ * this is second item\n\ \n\ ```\n\ This is some code\n\ ```\n\ \n\ ### Tables with bootstrap style\n\ \n\ | Tables      | Are             | Cool  |\n\ | ------------- |-----------------| ----- |\n\ | col 3 is      | here           | $1600 |\n\ | col 2 is      | there          |   $12 |\n\ | zebra stripes | are neat |    $1 |\n\ \n\ ### Quotes\n\ \n\ > Blockquotes are very handy in email to emulate reply text.\n\ > This line is part of the same quote."
+        }
+      };
+
+      $scope.current = langs[langIndex];
+      $scope.toggleMde = function() {
+        langIndex = (langIndex + 1) % 2;
+        $scope.initial.en.show = langIndex === 0;
+        $scope.initial.fr.show = langIndex === 1;
+        $scope.current = langs[langIndex];
+      };
+
+
+    });
+
+  </script>
+  <title>Testing sf localized string ASF addon</title>
+</head>
+
+<body ng-app="test">
+<div class="container-fluid" ng-controller="FormController">
+  <button class="btn btn-info" ng-click="toggleMde()">Toggle Lang</button>
+  <div class="row">
+    <div class="col-md-6" ng-show="initial.en.show">
+      <obiba-simple-mde text="initial.en.text" update="initial.en.show" rows="5" readonly="false"></obiba-simple-mde>
+    </div>
+    <div class="col-md-6" ng-show="initial.fr.show">
+      <obiba-simple-mde text="initial.fr.text" update="initial.fr.show" rows="5" readonly="true"></obiba-simple-mde>
+    </div>
+  </div>
+</div>
+
+  </body>
+
+</html>

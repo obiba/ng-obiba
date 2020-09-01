@@ -3180,6 +3180,11 @@ angular.module("obiba.simpleMde", [ "templates-main" ]);
                     action: SimpleMDE.togglePreview,
                     className: "fa fa-eye no-disable",
                     title: LocaleStringUtils.translate("simple-mde.toolbar.preview")
+                }, {
+                    name: "fullScreen",
+                    action: SimpleMDE.toggleFullScreen,
+                    className: "fa fa-arrows-alt no-disable",
+                    title: LocaleStringUtils.translate("simple-mde.toolbar.fullScreen")
                 } ];
                 function onSimpleMdeChange() {
                     scope.text = simpleMde.value();

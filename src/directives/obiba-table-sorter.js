@@ -1,11 +1,12 @@
 'use strict';
 
 (function () {
+
   function ObibaTableSorterState(scope, element) {
     Object.defineProperties(this, {
       documents: {
         enumerable: true,
-        value: scope.obibaTableSorter
+        value: Array.isArray(scope.obibaTableSorter) ? scope.obibaTableSorter : []
       },
       element: {
         enumerable: true,
@@ -19,7 +20,7 @@
   }
 
   angular.module('ngObiba')
-    .directive('obibaTableSorter', [function () {
+    .directive('obibaTableSorter', ['$timeout', function ($timeout) {
       var obibaTableSorterState;
 
       function resolveObjectPath(obj, path) {
@@ -99,25 +100,30 @@
         }
       }
 
-      function onSortButtonClick(event) {
-        event.preventDefault();
-
-        var target = event.currentTarget,
-          icon = target.querySelector('i');
+      function doSort(column, order) {
+        var target = column, icon = column.querySelector('i');
 
         clearOtherButtonStates(target.dataset.columnName);
 
         if (icon) {
-          var order = getNextOrderFromCurrent(target.dataset.order);
+          var sortOrder = order || getNextOrderFromCurrent(target.dataset.order);
 
-          icon.className = 'fa fa-sort-' + order;
-          target.dataset.order = order;
+          icon.className = 'fa fa-sort-' + sortOrder;
+          target.dataset.order = sortOrder;
 
           obibaTableSorterState.currentTarget = target.dataset.columnName;
-          obibaTableSorterState.documents.sort(order === 'up' ? obibaTableSorterComparator : reverseObibaTableSorterComparator);
 
-          obibaTableSorterState.scope.$apply();
+          if (obibaTableSorterState.callback) {
+            obibaTableSorterState.callback.call(null, target.dataset.columnName, sortOrder === 'up' ? 'asc' : 'desc');
+          } else {
+            $timeout(() => obibaTableSorterState.documents.sort(sortOrder === 'up' ? obibaTableSorterComparator : reverseObibaTableSorterComparator));
+          }
         }
+      }
+
+      function onSortButtonClick(event) {
+        event.preventDefault();
+        doSort(event.currentTarget);
       }
 
       function createAndAppendSortButtonToColumnHeader(columnHeader) {
@@ -157,21 +163,38 @@
         }
       }
 
+      function convertOrder(value) {
+        switch (value) {
+          case 'asc':
+            return 'up';
+          case 'desc':
+            return 'down';
+        }
+
+        return value;
+      }
+
       return {
         restrict: 'A',
-        scope: { obibaTableSorter: '=' },
+        scope: { obibaTableSorter: '='},
         link: function (scope, element) {
           scope.$watch('obibaTableSorter', function (newValue) {
             if (newValue) {
               obibaTableSorterState = new ObibaTableSorterState(scope, element);
-                prepareSortButtons(scope, element);
+              prepareSortButtons(scope, element);
+              var column = element[0].querySelector('thead a[data-order="up"]') || element[0].querySelector('thead a[data-order="down"]');
+              var order = null;
 
-                var existingButton = element[0].querySelector('thead a[data-order="up"]') || element[0].querySelector('thead a[data-order="down"]');
-                if (existingButton) {
-                  var order = existingButton.dataset.order;
-                  obibaTableSorterState.currentTarget = existingButton.dataset.columnName;
-                  obibaTableSorterState.documents.sort(order === 'up' ? obibaTableSorterComparator : reverseObibaTableSorterComparator);
-                }
+              if (!column && element[0].dataset.columnName) {
+                // Default/initial column name and order are set here; this is usually set on the HTML <table> element
+                column = element[0].querySelector('thead th[data-column-name="' + element[0].dataset.columnName + '"]');
+                order = convertOrder(element[0].dataset.order || null);
+              }
+
+              if (column) {
+                doSort(column, column.dataset.order || order);
+                obibaTableSorterState.callback = newValue instanceof Function ? newValue : null;
+              }
             }
           });
         }

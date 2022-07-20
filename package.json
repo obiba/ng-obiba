@@ -17,8 +17,8 @@
     "test": "test"
   },
   "dependencies": {
-    "@types/angular": "^1.6.50",
-    "angular": "1.6.9",
+    "@types/angular": "^1.8.4",
+    "angular": "1.8.3",
     "angular-marked": "1.2.2",
     "angular-moment": "1.2.0",
     "angular-nvd3": "1.0.9",
